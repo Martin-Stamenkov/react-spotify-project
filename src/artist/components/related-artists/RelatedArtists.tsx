@@ -29,7 +29,7 @@ export function RelatedArtists() {
             <Grid item key={artist.id}>
               <CardMedia
                 id={artist.id}
-                path={`/artists/${artist.id}`}
+                path={`../artists/${artist.id}`}
                 image={artist.images[0].url}
                 name={artist.name}
                 description={artist.type}

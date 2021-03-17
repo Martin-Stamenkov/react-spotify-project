@@ -6,29 +6,43 @@ import {
   CardContent,
   makeStyles,
 } from "@material-ui/core";
-import { Button, Typography } from "components-lib";
+import { Button, Typography, Spacer } from "components-lib";
 import { Colors } from "styles";
 import { truncate } from "utils";
 
 interface ICardMedia {
-  id: string;
+  id?: string;
   type?: string;
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
   image: string;
   withCircleAvatar?: boolean;
   withFlex?: boolean;
+  withPlayButton?: boolean;
   path?: string;
   onClick?: MouseEventHandler<{}>;
+  height?: number;
+  width?: number;
+  imageMarginTop?: number;
+  titlePosition?:  "-moz-initial"
+  | "inherit"
+  | "initial"
+  | "revert"
+  | "unset"
+  | "fixed"
+  | "-webkit-sticky"
+  | "absolute"
+  | "relative"
+  | "static"
+  | "sticky"
+  | undefined;
 }
 
 const useStyles = makeStyles({
   root: {
-    width: 220,
-    maxHeight: 285,
-    height: "100%",
+    width: 215,
+    maxHeight: 300,
     backgroundColor: "#0c0c0c",
-    paddingBottom: 25,
     "& .hidden-button": {
       display: "none",
     },
@@ -47,6 +61,8 @@ const useStyles = makeStyles({
 const defaultValues = {
   withFlex: true,
   withCircleAvatar: false,
+  withPlayButton: true,
+  imageMarginTop: 15,
 };
 
 export function CardMedia({
@@ -56,12 +72,17 @@ export function CardMedia({
   path,
   withCircleAvatar = defaultValues.withCircleAvatar,
   withFlex = defaultValues.withFlex,
+  withPlayButton = defaultValues.withPlayButton,
+  height,
+  width,
+  imageMarginTop = defaultValues.imageMarginTop,
+  titlePosition ='inherit',
   onClick,
 }: ICardMedia) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    <Card style={{ height: height, width: width }} className={classes.root}>
       <Button.Link to={path}>
         <CardActionArea
           onClick={onClick}
@@ -76,16 +97,22 @@ export function CardMedia({
               height: 185,
               width: 190,
               borderRadius: withCircleAvatar ? 100 : 2,
-              marginTop: 15,
+              marginTop: imageMarginTop,
             }}
             component="img"
             alt="Image"
-            height="100"
             image={image}
             title="Image"
           />
           <CardContent>
-            <Typography customStyle={{ color: Colors.White }} variant="h6">
+            <Typography
+              customStyle={{
+                color: Colors.White,
+                top: 5,
+                position: titlePosition,
+              }}
+              variant="h6"
+            >
               {truncate(name, {
                 length: 15,
                 separator: " ",
@@ -93,13 +120,17 @@ export function CardMedia({
             </Typography>
             <Typography variant="body2" customStyle={{ color: Colors.Grey }}>
               {truncate(description, {
-                length: 50,
+                length: 45,
                 separator: " ",
               })}
             </Typography>
           </CardContent>
-          <Button.Play className="hidden-button" withPadding />
+
+          {withPlayButton ? (
+            <Button.Play className="hidden-button" withPadding />
+          ) : null}
         </CardActionArea>
+        <Spacer height={150} />
       </Button.Link>
     </Card>
   );

@@ -3,16 +3,18 @@ import { getCategoryPlaylists } from "api/requests";
 import { Grid } from "@material-ui/core";
 import { CardMedia, CardContainer } from "components-lib";
 
+const categoryOffset = 5
+
 export function Categories({ id, title }) {
   const [playlists, setPlaylists] = useState();
 
   useEffect(() => {
     async function playlistsData() {
-      const playlists = await getCategoryPlaylists(id);
+      const playlists = await getCategoryPlaylists(id , categoryOffset);
       setPlaylists(playlists);
     }
     playlistsData();
-  }, [id]);
+  }, []);
 
   return (
     <>

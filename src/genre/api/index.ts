@@ -1,0 +1,4 @@
+export {
+   getGenreDetails
+  } from "./requests";
+  

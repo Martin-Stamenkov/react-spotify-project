@@ -2,9 +2,9 @@ import axios from "axios";
 import { categories, categoryPlaylists } from "./endpoints";
 import { Storage } from "../storage";
 
-export const getListOfCategories = async () => {
+export const getListOfCategories = async (limit) => {
   const listCategories = await axios
-    .get(categories, {
+    .get(categories(limit), {
       headers: {
         Authorization: "Bearer " + Storage.getItem("accessToken"),
       },
@@ -19,9 +19,9 @@ export const getListOfCategories = async () => {
   return listCategories?.data?.categories;
 };
 
-export const getCategoryPlaylists = async (id) => {
+export const getCategoryPlaylists = async (id, offset) => {
   return await axios
-    .get(categoryPlaylists(id), {
+    .get(categoryPlaylists(id, offset), {
       headers: {
         Authorization: "Bearer " + Storage.getItem("accessToken"),
       },

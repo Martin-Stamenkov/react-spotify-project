@@ -12,11 +12,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import avatar from "assets/avatar.png";
 import { ProfileMenu } from "./profile-menu";
-import { Button, Typography } from "components-lib";
+import { Button, Typography, Input } from "components-lib";
 import { useProfile } from "user";
 import { Storage } from "storage";
 import { login } from "auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 // Get the hash of the url
 const hash = window.location.hash
@@ -37,6 +37,7 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { profile } = useProfile();
   const history = useHistory();
+  const location = useParams()
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -50,14 +51,10 @@ export const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // const navigateBack = () => {
-  //   history.goBack();
-  // };
 
   useEffect(() => {
     let _token = hash.access_token;
     if (_token) {
-      // setAccessToken(_token);
       Storage.setItem("accessToken", _token);
     }
   }, []);
@@ -65,9 +62,8 @@ export const Header = () => {
   return (
     <div className={classes.root}>
       <AppBar
-        className={`${classes.appBar} ${
-          trigger === false ? "" : classes.appBarScrolled
-        }`}
+        className={`${classes.appBar} ${trigger === false ? "" : classes.appBarScrolled
+          }`}
         position="fixed"
       >
         <Toolbar>
@@ -78,8 +74,12 @@ export const Header = () => {
             <Button.Icon onClick={() => history.goForward()}>
               <NavigateNextIcon />
             </Button.Icon>
+            {
+              history.location.pathname === ('/search') ?
+                <Input/> : null
+            }
           </div>
-          {!profile && accessToken === null ? (
+          {!profile ? (
             <MButton className="btn btn--loginApp-link" href={login}>
               <Typography color="primary">Login In</Typography>
             </MButton>

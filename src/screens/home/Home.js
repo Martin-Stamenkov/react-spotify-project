@@ -4,13 +4,15 @@ import { getListOfCategories } from "../../api/requests";
 import { Spacer, Spinner } from "components-lib";
 import { useProfile } from "user";
 
+const limitCategorites = 10
+
 export function Home() {
   const [listCategories, setListCategories] = useState(null);
   const { profile } = useProfile();
 
   useEffect(() => {
     async function categoriesData() {
-      const categories = await getListOfCategories();
+      const categories = await getListOfCategories(limitCategorites);
       setListCategories(categories);
     }
     categoriesData();

@@ -1,0 +1,1 @@
+export const genre = (genreId: string) => `https://api.spotify.com/v1/browse/categories/${genreId}?country=SE&locale=sv_SE"`

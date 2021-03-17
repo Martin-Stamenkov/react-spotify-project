@@ -40,7 +40,7 @@ export function Albums({ albumLimit = defaultAlbumLimit }: IAlbums) {
             data.items.map((album: IAlbum, index: number) => (
               <Grid item key={index}>
                 <CardMedia
-                  path={`album/${album.id}`}
+                  path={`../../album/${album.id}`}
                   id={album.id}
                   image={album.images[0].url}
                   name={album.name}

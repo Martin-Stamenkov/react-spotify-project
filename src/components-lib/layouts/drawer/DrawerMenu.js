@@ -36,7 +36,7 @@ export const DrawerMenu = () => {
           <HomeIcon />
           <ListItemText className={classes.items} primary="Home" />
         </ListItem>
-        <ListItem button>
+        <ListItem onClick={() => history.push("/search")} button>
           <SearchIcon />
           <ListItemText className={classes.items} primary="Search" />
         </ListItem>

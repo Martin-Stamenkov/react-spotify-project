@@ -11,7 +11,5 @@ describe(Home.name, () => {
       </ProfileProvider>
     );
 
-    // expect(getByText("Linkin Park")).toBeTruthy();
-    // expect(getByText("artist")).toBeTruthy();
   });
 });

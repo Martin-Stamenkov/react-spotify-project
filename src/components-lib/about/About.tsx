@@ -4,12 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "styles";
 
 interface IAbout {
-  type: string;
-  avatar: string;
+  type?: string;
+  avatar?: string;
   description?: string;
   name: string;
   additionalInfo?: string;
   backgroundColor?: string;
+  backgroundImage?: string;
 }
 
 export const useStyles = makeStyles({
@@ -49,6 +50,7 @@ export function About({
   description,
   additionalInfo,
   backgroundColor,
+  backgroundImage,
 }: IAbout) {
   const classes = useStyles();
 
@@ -58,9 +60,15 @@ export function About({
         className={classes.container}
         style={{
           background: `linear-gradient(${backgroundColor} , ${Colors.Black01})`,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        <img className={classes.avatar} src={avatar} alt="Avatar" />
+        {avatar ? (
+          <img className={classes.avatar} src={avatar} alt="Avatar" />
+        ) : null}
         <div className={classes.infoContainer}>
           <Typography variant="body1" className={classes.info}>
             {type}

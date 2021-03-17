@@ -27,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
   navigationButtons: {
     display: "flex",
     flexGrow: 1,
+    alignItems: "center",
     "& button": {
       color: Colors.White,
       backgroundColor: Colors.Black,

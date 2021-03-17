@@ -1,3 +1,4 @@
-export const categories = `${process.env.REACT_APP_BASE_URL}/browse/categories?offset=0&limit=10`;
-export const categoryPlaylists = (id) =>
-  `${process.env.REACT_APP_BASE_URL}/browse/categories/${id}/playlists?limit=8`;
+export const categories = (limit) => `${process.env.REACT_APP_BASE_URL}/browse/categories?offset=0&limit=${limit}`;
+export const categoryPlaylists = (id, offset) =>
+  `${process.env.REACT_APP_BASE_URL}/browse/categories/${id}/playlists?country=SE&offset=${offset}&limit=8`;
+  
