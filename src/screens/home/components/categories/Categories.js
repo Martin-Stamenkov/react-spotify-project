@@ -14,7 +14,7 @@ export function Categories({ id, title }) {
       setPlaylists(playlists);
     }
     playlistsData();
-  }, []);
+  }, [id]);
 
   return (
     <>

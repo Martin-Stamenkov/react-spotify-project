@@ -12,11 +12,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import avatar from "assets/avatar.png";
 import { ProfileMenu } from "./profile-menu";
-import { Button, Typography, Input } from "components-lib";
+import { Button, Input } from "components-lib";
 import { useProfile } from "user";
 import { Storage } from "storage";
 import { login } from "auth";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 // Get the hash of the url
 const hash = window.location.hash
@@ -30,19 +32,22 @@ const hash = window.location.hash
     return initial;
   }, {});
 window.location.hash = "";
-const accessToken = Storage.getItem("accessToken");
 
-export const Header = () => {
+const Header = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const { profile } = useProfile();
   const history = useHistory();
-  const location = useParams()
-
+  console.log(props)
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
   });
+  const [state, setState] = useState(0);
+  //   const { id }: any = useParams();
+  const handleChange = (event, value) => {
+    setState(value);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,21 +72,38 @@ export const Header = () => {
         position="fixed"
       >
         <Toolbar>
-          <div className={classes.navigationButtons}>
-            <Button.Icon onClick={() => history.goBack()}>
+          <div className={classes.navigationButtonsContainer}>
+            <Button.Icon className={classes.navigationButtons} onClick={() => history.goBack()}>
               <NavigateBeforeIcon />
             </Button.Icon>
-            <Button.Icon onClick={() => history.goForward()}>
+            <Button.Icon className={classes.navigationButtons}  onClick={() => history.goForward()}>
               <NavigateNextIcon />
             </Button.Icon>
             {
-              history.location.pathname === ('/search') ?
-                <Input/> : null
+              props.location.pathname === ('/search') ?
+                <Input /> : null
+            }
+            {
+              props.location.pathname === ('/collection') ?
+                <Tabs
+                  value={state}
+                  onChange={handleChange}
+                  classes={{
+                    indicator: classes.indicator
+                  }}>
+
+                  <Tab  classes={{ root: classes.tab }}  label="Playlist" />
+                  <Tab  classes={{ root: classes.tab }} label="Podcasts" />
+                  <Tab  classes={{ root: classes.tab }} label="Artists" />
+                  <Tab  classes={{ root: classes.tab }} label="Albums" />
+                </Tabs>
+
+                : null
             }
           </div>
           {!profile ? (
             <MButton className="btn btn--loginApp-link" href={login}>
-              <Typography color="primary">Login In</Typography>
+              Login In
             </MButton>
           ) : (
             profile && (
@@ -108,6 +130,8 @@ export const Header = () => {
           <ProfileMenu props={anchorEl} handleClose={handleClose} />
         </Toolbar>
       </AppBar>
-    </div>
+    </div >
   );
 };
+
+export default withRouter(Header);

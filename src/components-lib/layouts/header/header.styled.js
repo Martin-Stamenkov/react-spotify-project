@@ -17,6 +17,10 @@ export const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.standard,
     }),
   },
+  indicator: {
+    display: 'none',
+    marginLeft: 30
+  },
   appBarScrolled: {
     backgroundColor: "#000000",
     transition: theme.transitions.create(["background-color"], {
@@ -24,17 +28,34 @@ export const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.standard,
     }),
   },
-  navigationButtons: {
+  tab: {
+    minWidth: 80, 
+    minHeight: 45,
+    fontSize: 12,
+  },
+  navigationButtonsContainer: {
     display: "flex",
     flexGrow: 1,
     alignItems: "center",
     "& button": {
       color: Colors.White,
-      backgroundColor: Colors.Black,
       width: 35,
       height: 35,
       marginRight: 10,
     },
+    "& .Mui-selected": {
+      backgroundColor: Colors.Grey02,
+      borderRadius: 10
+    },
+    "& .PrivateTabIndicator-root-44": {
+      display: "none"
+    }
+
+  },
+  navigationButtons: {
+    backgroundColor: Colors.Black,
+    width: 30,
+    height: 30,
   },
   chip: {
     height: "35px",

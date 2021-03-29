@@ -6,6 +6,7 @@ import { Playlist } from "playlist";
 import { Artist, Discography } from "artist";
 import { Album } from "album";
 import { GenreDetails, MorePlaylists } from "genre";
+import { Library } from "library";
 
 export function Router() {
   const { profile } = useProfile();
@@ -32,6 +33,7 @@ export function Router() {
           />
           <Route exact path="/genre/:id" component={GenreDetails} />
           <Route  path="/genre/playlist/:id/" exact component={MorePlaylists} />
+          <Route  path="/collection" component={Library} />
         </Switch>
       )}
     </>

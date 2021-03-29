@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { About, CardContainer, CardMedia, Spacer } from "components-lib";
+import { CardContainer, CardMedia, Spacer, Spinner } from "components-lib";
 import { getCategoryPlaylists } from "api/requests";
 import { Grid } from "@material-ui/core";
 import { useParams } from "react-router-dom";
@@ -18,28 +18,33 @@ export function MorePlaylists() {
   const [playlist, setPlaylist] = useState<any>([]);
 
   async function moreData() {
-      if (offset === data.total) {
-          return;
-      }
-    const response = await getCategoryPlaylists(id, offset);
-    setPlaylist([...playlist, ...response.items]);
-    setOffset(offset + 5);
-    setIsFetching(false);
-
+    if (playlist.length < data.total) {
+      const response = await getCategoryPlaylists(id, offset);
+      setPlaylist([...playlist, ...response.items]);
+      setOffset(offset + 5);
+      setIsFetching(false);
+    }
+    if (isFetching) {
+      return <Spinner />;
+    }
   }
-  console.log(data);
 
   useEffect(() => {
-   data && setPlaylist(data.items);
+    data && setPlaylist(data.items);
+    setOffset(offset + 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-console.log(playlist)
+
   return (
     <>
-      {playlist && (
-        <>
-          <CardContainer title="Popular Playlist">
-              {playlist.map((playlist: any) => (
-                <Grid key={playlist.id} item>
+      {status === "loading" ? (
+        <Spinner />
+      ) : (
+        playlist && (
+          <>
+            <CardContainer title="Popular Playlist">
+              {playlist.map((playlist: any, index: number) => (
+                <Grid key={index} item>
                   <CardMedia
                     path={`../playlist/${playlist.id}`}
                     image={playlist.images[0].url}
@@ -48,9 +53,10 @@ console.log(playlist)
                   />
                 </Grid>
               ))}
-          </CardContainer>
-          <Spacer height={150} />
-        </>
+            </CardContainer>
+            <Spacer height={150} />
+          </>
+        )
       )}
     </>
   );

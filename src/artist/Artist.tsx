@@ -6,12 +6,14 @@ import { About, Spacer, Spinner, Button } from "components-lib";
 import { RelatedArtists, Albums } from "./components";
 import { TopTracks } from "./components/top-tracks/TopTracks";
 import { useProfile } from "user";
+import { useSnackbar } from "notistack";
 
 export function Artist() {
   const { id }: { id: string } = useParams();
 
   const { data, status } = useQuery("artist", async () => await getArtist(id));
   const { followedArtists } = useProfile();
+  const { enqueueSnackbar } = useSnackbar();
   const artistIsFollowed =
     followedArtists && followedArtists.items.find((x: any) => x.id === id);
 
@@ -36,6 +38,8 @@ export function Artist() {
             <Button.Primary
               onClick={() => {
                 followArtist(id);
+                enqueueSnackbar("Saved to your library", {  variant: 'info' });
+                
               }}
             >
               {!artistIsFollowed ? "Follow" : "Unfollow"}
