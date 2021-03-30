@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import avatar from "../../../../assets/music_placeholder.png";
+import avatar from "assets/music_placeholder.png";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { Link } from "react-router-dom";
 import { useStyles } from "./play-list-content.styles";

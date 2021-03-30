@@ -8,9 +8,10 @@ interface IAbout {
   avatar?: string;
   description?: string;
   name: string;
-  additionalInfo?: string;
+  additionalInfo?: any;
   backgroundColor?: string;
   backgroundImage?: string;
+  infoAvatar?: string;
 }
 
 export const useStyles = makeStyles({
@@ -40,6 +41,14 @@ export const useStyles = makeStyles({
   },
   info: {
     color: Colors.White,
+    display: "flex",
+    alignItems: "center",
+  },
+  avatarInfo: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    borderRadius: 50,
   },
 });
 
@@ -51,6 +60,7 @@ export function About({
   additionalInfo,
   backgroundColor,
   backgroundImage,
+  infoAvatar,
 }: IAbout) {
   const classes = useStyles();
 
@@ -78,6 +88,13 @@ export function About({
             {description}
           </Typography>
           <Typography variant="body1" className={classes.info}>
+            {infoAvatar ? (
+              <img
+                className={classes.avatarInfo}
+                src={infoAvatar}
+                alt="infoAvatar"
+              />
+            ) : null}
             {additionalInfo}
           </Typography>
         </div>

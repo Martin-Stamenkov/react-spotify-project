@@ -38,13 +38,11 @@ const Header = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { profile } = useProfile();
   const history = useHistory();
-  console.log(props)
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
   });
   const [state, setState] = useState(0);
-  //   const { id }: any = useParams();
   const handleChange = (event, value) => {
     setState(value);
   };

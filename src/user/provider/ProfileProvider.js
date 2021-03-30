@@ -5,20 +5,22 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-import { getUserAccount, getUserFollowedArtists } from "../api/requests";
+import { getUserAccount, getUserFollowedArtists, getListOfCurrentUserPlaylists } from "../api";
 
 const ProfileContext = createContext(undefined);
 
 export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [followedArtists, setFollowedArtists] = useState(null);
+  const [userPlaylists, setUserPlaylists] = useState(null);
+
 
   useEffect(() => {
-    async function userData() {
+    async function UserData() {
       const user = await getUserAccount();
       setProfile(user);
     }
-    userData();
+    UserData();
   }, []);
 
   useEffect(() => {
@@ -29,12 +31,21 @@ export function ProfileProvider({ children }) {
     UserFollowedData();
   }, []);
 
+  useEffect(() => {
+    async function UserPlaylists() {
+      const data = await getListOfCurrentUserPlaylists();
+      setUserPlaylists(data);
+    }
+    UserPlaylists();
+  }, []);
+
   const value = useMemo(
     () => ({
       followedArtists,
       profile,
+      userPlaylists
     }),
-    [profile, followedArtists]
+    [profile, followedArtists, userPlaylists]
   );
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

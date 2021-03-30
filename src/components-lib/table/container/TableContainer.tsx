@@ -42,8 +42,12 @@ export const TableContainer: React.FC<ITableContainer> = ({
           </TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>{children}</TableBody>
-      {withBottomHeight ? <Spacer height={100} /> : null}
+      <TableBody>
+        {children}
+        <tr>
+          <td>{withBottomHeight ? <Spacer height={100} /> : null}</td>
+        </tr>
+      </TableBody>
     </MUTable>
   );
 };

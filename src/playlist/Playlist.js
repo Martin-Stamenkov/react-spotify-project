@@ -5,6 +5,8 @@ import { getPlaylist } from "./api/requests";
 import { format, parseISO } from "date-fns";
 import { millisecondsConverter } from "utils";
 import { useQuery } from "react-query";
+import avatar from "assets/music_placeholder.png";
+
 
 export function Playlist() {
   const { id } = useParams();
@@ -30,7 +32,7 @@ export function Playlist() {
               <About
                 backgroundColor={data.primary_color}
                 type={data.type}
-                avatar={data.images[0].url}
+                avatar={data.images.length > 0 ? data.images[0].url : avatar}
                 name={data.name}
                 description={data.description}
                 additionalInfo={`${data.owner.display_name} \n\u2022 Followers ${data.followers.total} \n\u2022 ${data.tracks.items.length} songs`}

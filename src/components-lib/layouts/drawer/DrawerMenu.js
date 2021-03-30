@@ -14,11 +14,15 @@ import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
 import AddIcon from "@material-ui/icons/Add";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
+import { useProfile } from "user";
+import { Spacer } from "components-lib/spacer";
 
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-
+  const { userPlaylists } = useProfile()
+  const obj = document.getElementById('s');
+  console.log(obj)
   return (
     <Drawer
       className={classes.drawer}
@@ -44,17 +48,23 @@ export const DrawerMenu = () => {
           <LibraryMusicIcon />
           <ListItemText className={classes.items} primary="Your Library" />
         </ListItem>
-        <ListItemText className={classes.playList} primary="Playlist" />
         <ListItem button>
           <AddIcon />
           <ListItemText className={classes.items} primary="Create Playlist" />
         </ListItem>
-        <ListItem button>
+        <ListItem onClick={() => history.push("/collection/tracks")} button>
           <FavoriteBorderIcon />
           <ListItemText className={classes.items} primary="Liked songs" />
         </ListItem>
       </List>
       <Divider />
+      <div className={classes.playLists}>
+        {userPlaylists && userPlaylists.items.map(userPlaylist => <ListItem onClick={() => history.push(`../../playlist/${userPlaylist.id}`)} button>
+          <ListItemText className={classes.items} primary={userPlaylist.name} />
+        </ListItem>
+        )}
+      </div>
+      <Spacer height={300} />
     </Drawer>
   );
 };

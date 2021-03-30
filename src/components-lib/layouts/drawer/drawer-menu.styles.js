@@ -13,6 +13,7 @@ export const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
         color: "#757575",
         backgroundColor: "#000000",
+        // height: '80%',
         "& hr": {
             backgroundColor: "#ffffff",
         },
@@ -31,9 +32,15 @@ export const useStyles = makeStyles((theme) => ({
         fontWeight: 800,
         marginLeft: 10,
     },
-    playList: {
-        marginTop: 20,
-        marginLeft: 10,
-        fontWeight: 900,
+    playLists:{ overflowY: "scroll",'&::-webkit-scrollbar': {
+        width: 13
     },
+      '&::-webkit-scrollbar-track': {
+        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+        webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgb(94 96 97)',
+        outline: '1px solid slategrey'
+      } },
 }));

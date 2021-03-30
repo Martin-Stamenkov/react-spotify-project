@@ -1,37 +1,27 @@
 import axios from "axios";
-import { getUser, getFollowedArtists } from "./endpoints";
-import { Storage } from "storage";
+import { user, followedArtists, userPlaylists } from "./endpoints";
+import { requestHeader } from "utils";
 
 export const getUserAccount = async () => {
-  const user = await axios
-    .get(getUser, {
-      headers: {
-        Authorization: "Bearer " + Storage.getItem("accessToken"),
-      },
+  const response = await axios
+    .get(user, {
+      headers: requestHeader
     })
-    .then((response) => {
-      return response;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 
-  return user?.data;
+  return response.data;
 };
 
 export const getUserFollowedArtists = async () => {
-  const artists = await axios
-    .get(getFollowedArtists, {
-      headers: {
-        Authorization: "Bearer " + Storage.getItem("accessToken"),
-      },
+  const response = await axios
+    .get(followedArtists, {
+      headers: requestHeader
     })
-    .then((response) => {
-      return response;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 
-  return artists?.data?.artists;
+  return response.data.artists;
+};
+export const getListOfCurrentUserPlaylists = async () => {
+  const response = await axios.get(userPlaylists, {
+    headers: requestHeader
+  })
+  return response.data
 };
