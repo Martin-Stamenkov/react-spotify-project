@@ -100,7 +100,7 @@ const Header = (props) => {
             }
           </div>
           {!profile ? (
-            <MButton className="btn btn--loginApp-link" href={login}>
+            <MButton color="primary" className="btn btn--loginApp-link" href={login}>
               Login In
             </MButton>
           ) : (
