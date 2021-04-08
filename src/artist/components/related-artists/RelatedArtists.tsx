@@ -25,12 +25,12 @@ export function RelatedArtists() {
         <Spinner />
       ) : data.artists.length > 0 ? (
         <CardContainer title="Fans Also Like">
-          {data.artists?.map((artist: IArtist) => (
-            <Grid item key={artist.id}>
+          {data.artists.map((artist: IArtist, index: number) => (
+            <Grid item key={index}>
               <CardMedia
                 id={artist.id}
-                path={`../artists/${artist.id}`}
-                image={artist.images[0].url}
+                path={`/artists/${artist.id}`}
+                image={artist.images[0]?.url}
                 name={artist.name}
                 description={artist.type}
                 withFlex={false}

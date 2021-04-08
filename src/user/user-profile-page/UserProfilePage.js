@@ -56,7 +56,7 @@ export const UserProfilePage = () => {
                   name={artist.name}
                   description={artist.type}
                   image={artist.images[0].url}
-                  height={285}
+                  height={275}
                 />
               </Grid>
             ))}

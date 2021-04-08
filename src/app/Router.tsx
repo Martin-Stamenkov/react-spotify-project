@@ -6,8 +6,9 @@ import { Playlist } from "playlist";
 import { Artist, Discography } from "artist";
 import { Album } from "album";
 import { GenreDetails, MorePlaylists } from "genre";
-import { Library } from "library";
+import { Playlists, Artists, Albums, Podcasts } from "library";
 import { LikedSongs } from "liked-songs";
+import { uniqueId } from "utils";
 
 export function Router() {
   const { profile } = useProfile();
@@ -24,9 +25,16 @@ export function Router() {
           <Route path="/profile" component={UserProfilePage} />
           <Route path="/home" component={Home} />
           <Route path="/search" component={Search} />
-          <Route path="/playlist/:id" component={Playlist} />
-          <Route exact path="/artists/:id" component={Artist} />
+          <Route
+            path="/playlist/:id"
+            render={() => <Playlist key={uniqueId()} />}
+          />
           <Route path="/album/:id" component={Album} />
+          <Route
+            exact
+            path="/artists/:id"
+            render={() => <Artist key={uniqueId()} />}
+          />
           <Route
             exact
             path="/artists/discography/:id/"
@@ -34,8 +42,11 @@ export function Router() {
           />
           <Route exact path="/genre/:id" component={GenreDetails} />
           <Route path="/genre/playlist/:id/" exact component={MorePlaylists} />
-          <Route exact path="/collection" component={Library} />
           <Route path="/collection/tracks" component={LikedSongs} />
+          <Route path="/collection/playlists" component={Playlists} />
+          <Route path="/collection/artists" component={Artists} />
+          <Route path="/collection/albums" component={Albums} />
+          <Route path="/collection/podcasts" component={Podcasts} />
         </Switch>
       )}
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { followArtist, getArtist } from "./api/requests";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -16,6 +16,12 @@ export function Artist() {
   const { enqueueSnackbar } = useSnackbar();
   const artistIsFollowed =
     followedArtists && followedArtists.items.find((x: any) => x.id === id);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
 
   return (
     <>
@@ -38,8 +44,13 @@ export function Artist() {
             <Button.Primary
               onClick={() => {
                 followArtist(id);
-                enqueueSnackbar("Saved to your library", {  variant: 'info' });
-                
+                enqueueSnackbar(
+                  !artistIsFollowed
+                    ? "Saved to your library"
+                    : "Removed from your library",
+                  { variant: "info" }
+                );
+                console.log(followedArtists);
               }}
             >
               {!artistIsFollowed ? "Follow" : "Unfollow"}

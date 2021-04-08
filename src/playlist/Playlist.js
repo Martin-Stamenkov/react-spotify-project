@@ -37,7 +37,9 @@ export function Playlist() {
                 description={data.description}
                 additionalInfo={`${data.owner.display_name} \n\u2022 Followers ${data.followers.total} \n\u2022 ${data.tracks.items.length} songs`}
               />
-              <div>
+              <>
+              {data.tracks.items.length === 0 ? null :
+              
                 <Table.Container withBottomHeight withDateAdded>
                   {data.tracks.items.map((item, index) => (
                     <Table.Row key={index} hover>
@@ -86,7 +88,8 @@ export function Playlist() {
                     </Table.Row>
                   ))}
                 </Table.Container>
-              </div>
+                }
+              </>
             </>
           )}
         </>

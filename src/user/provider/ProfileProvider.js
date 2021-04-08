@@ -5,7 +5,15 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-import { getUserAccount, getUserFollowedArtists, getListOfCurrentUserPlaylists } from "../api";
+import {
+  getCurrentUserSavedAlbums,
+  getCurrentUserSavedShows,
+} from "user/api/requests";
+import {
+  getUserAccount,
+  getUserFollowedArtists,
+  getListOfCurrentUserPlaylists,
+} from "../api";
 
 const ProfileContext = createContext(undefined);
 
@@ -13,7 +21,8 @@ export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [followedArtists, setFollowedArtists] = useState(null);
   const [userPlaylists, setUserPlaylists] = useState(null);
-
+  const [userAlbums, setUserAlbums] = useState(null);
+  const [userShows, setUserShows] = useState(null);
 
   useEffect(() => {
     async function UserData() {
@@ -39,13 +48,31 @@ export function ProfileProvider({ children }) {
     UserPlaylists();
   }, []);
 
+  useEffect(() => {
+    async function UserAlbums() {
+      const albums = await getCurrentUserSavedAlbums();
+      setUserAlbums(albums);
+    }
+    UserAlbums();
+  }, []);
+
+  useEffect(() => {
+    async function UserShows() {
+      const shows = await getCurrentUserSavedShows();
+      setUserShows(shows);
+    }
+    UserShows();
+  }, []);
+
   const value = useMemo(
     () => ({
       followedArtists,
       profile,
-      userPlaylists
+      userPlaylists,
+      userAlbums,
+      userShows,
     }),
-    [profile, followedArtists, userPlaylists]
+    [profile, followedArtists, userPlaylists, userAlbums, userShows]
   );
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

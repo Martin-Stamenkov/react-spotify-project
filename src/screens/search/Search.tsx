@@ -33,8 +33,8 @@ export function Search() {
                     withPlayButton={false}
                     image={genre.icons[0].url}
                     name={genre.name}
-                    height={185}
-                    width={190}
+                    height={175}
+                    width={170}
                     imageMarginTop={0}
                     titlePosition="absolute"
                   />

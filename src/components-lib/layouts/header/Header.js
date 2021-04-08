@@ -17,8 +17,7 @@ import { useProfile } from "user";
 import { Storage } from "storage";
 import { login } from "auth";
 import { useHistory, withRouter } from "react-router-dom";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Library } from "library";
 
 // Get the hash of the url
 const hash = window.location.hash
@@ -42,10 +41,6 @@ const Header = (props) => {
     disableHysteresis: true,
     threshold: 100,
   });
-  const [state, setState] = useState(0);
-  const handleChange = (event, value) => {
-    setState(value);
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,42 +60,34 @@ const Header = (props) => {
   return (
     <div className={classes.root}>
       <AppBar
-        className={`${classes.appBar} ${trigger === false ? "" : classes.appBarScrolled
-          }`}
+        className={`${classes.appBar} ${
+          trigger === false ? "" : classes.appBarScrolled
+        }`}
         position="fixed"
       >
         <Toolbar>
           <div className={classes.navigationButtonsContainer}>
-            <Button.Icon className={classes.navigationButtons} onClick={() => history.goBack()}>
+            <Button.Icon
+              className={classes.navigationButtons}
+              onClick={() => history.goBack()}
+            >
               <NavigateBeforeIcon />
             </Button.Icon>
-            <Button.Icon className={classes.navigationButtons}  onClick={() => history.goForward()}>
+            <Button.Icon
+              className={classes.navigationButtons}
+              onClick={() => history.goForward()}
+            >
               <NavigateNextIcon />
             </Button.Icon>
-            {
-              props.location.pathname === ('/search') ?
-                <Input /> : null
-            }
-            {
-              props.location.pathname === ('/collection') ?
-                <Tabs
-                  value={state}
-                  onChange={handleChange}
-                  classes={{
-                    indicator: classes.indicator
-                  }}>
-
-                  <Tab  classes={{ root: classes.tab }}  label="Playlist" />
-                  <Tab  classes={{ root: classes.tab }} label="Podcasts" />
-                  <Tab  classes={{ root: classes.tab }} label="Artists" />
-                  <Tab  classes={{ root: classes.tab }} label="Albums" />
-                </Tabs>
-
-                : null
-            }
+            {props.location.pathname === "/search" ? <Input /> : null}
+            {props.location.pathname.includes("/collection") ? <Library /> : null}
           </div>
           {!profile ? (
-            <MButton color="primary" className="btn btn--loginApp-link" href={login}>
+            <MButton
+              color="primary"
+              className="btn btn--loginApp-link"
+              href={login}
+            >
               Login In
             </MButton>
           ) : (
@@ -128,7 +115,7 @@ const Header = (props) => {
           <ProfileMenu props={anchorEl} handleClose={handleClose} />
         </Toolbar>
       </AppBar>
-    </div >
+    </div>
   );
 };
 

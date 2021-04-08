@@ -14,7 +14,7 @@ interface ICardMedia {
   id?: string;
   type?: string;
   name?: string;
-  description?: string;
+  description?: string | string[];
   image: string;
   withCircleAvatar?: boolean;
   withFlex?: boolean;
@@ -24,23 +24,24 @@ interface ICardMedia {
   height?: number;
   width?: number;
   imageMarginTop?: number;
-  titlePosition?:  "-moz-initial"
-  | "inherit"
-  | "initial"
-  | "revert"
-  | "unset"
-  | "fixed"
-  | "-webkit-sticky"
-  | "absolute"
-  | "relative"
-  | "static"
-  | "sticky"
-  | undefined;
+  titlePosition?:
+    | "-moz-initial"
+    | "inherit"
+    | "initial"
+    | "revert"
+    | "unset"
+    | "fixed"
+    | "-webkit-sticky"
+    | "absolute"
+    | "relative"
+    | "static"
+    | "sticky"
+    | undefined;
 }
 
 const useStyles = makeStyles({
   root: {
-    width: 215,
+    width: 200,
     maxHeight: 300,
     backgroundColor: "#0c0c0c",
     "& .hidden-button": {
@@ -76,7 +77,7 @@ export function CardMedia({
   height,
   width,
   imageMarginTop = defaultValues.imageMarginTop,
-  titlePosition ='inherit',
+  titlePosition = "inherit",
   onClick,
 }: ICardMedia) {
   const classes = useStyles();
@@ -94,8 +95,8 @@ export function CardMedia({
         >
           <CardMediaMU
             style={{
-              height: 185,
-              width: 190,
+              height: 175,
+              width: 170,
               borderRadius: withCircleAvatar ? 100 : 2,
               marginTop: imageMarginTop,
             }}

@@ -20,9 +20,8 @@ import { Spacer } from "components-lib/spacer";
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { userPlaylists } = useProfile()
-  const obj = document.getElementById('s');
-  console.log(obj)
+  const { userPlaylists } = useProfile();
+  
   return (
     <Drawer
       className={classes.drawer}
@@ -44,7 +43,7 @@ export const DrawerMenu = () => {
           <SearchIcon />
           <ListItemText className={classes.items} primary="Search" />
         </ListItem>
-        <ListItem onClick={() => history.push("/collection")} button>
+        <ListItem onClick={() => history.push("/collection/playlists")} button>
           <LibraryMusicIcon />
           <ListItemText className={classes.items} primary="Your Library" />
         </ListItem>
@@ -59,10 +58,19 @@ export const DrawerMenu = () => {
       </List>
       <Divider />
       <div className={classes.playLists}>
-        {userPlaylists && userPlaylists.items.map(userPlaylist => <ListItem onClick={() => history.push(`../../playlist/${userPlaylist.id}`)} button>
-          <ListItemText className={classes.items} primary={userPlaylist.name} />
-        </ListItem>
-        )}
+        {userPlaylists &&
+          userPlaylists.items.map((userPlaylist, index) => (
+            <ListItem
+              key={index}
+              onClick={() => history.push(`../playlist/${userPlaylist.id}`)}
+              button
+            >
+              <ListItemText
+                className={classes.items}
+                primary={userPlaylist.name}
+              />
+            </ListItem>
+          ))}
       </div>
       <Spacer height={300} />
     </Drawer>
