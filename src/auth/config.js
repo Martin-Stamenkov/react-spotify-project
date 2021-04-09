@@ -9,7 +9,9 @@ const scopes = [
   "user-follow-modify",
   "user-library-read",
   "playlist-read-private",
-  "playlist-read-collaborative"
+  "playlist-read-collaborative",
+  "playlist-modify-public",
+  "playlist-modify-private"
 ];
 
 export const login = `${authEndpoint}?response_type=token&client_id=${clientId}&redirect_uri=${encodeURIComponent(

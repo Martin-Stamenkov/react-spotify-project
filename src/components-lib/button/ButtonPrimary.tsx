@@ -1,9 +1,10 @@
-import React, { MouseEventHandler } from "react";
+import React, { CSSProperties, MouseEventHandler } from "react";
 import { Colors } from "styles";
 import { ButtonBase, makeStyles } from "@material-ui/core";
 
 interface IButtonPrimary {
   onClick?: MouseEventHandler<{}>;
+  customStyle?: CSSProperties
 }
 
 export const useStyles = makeStyles({
@@ -22,11 +23,12 @@ export const useStyles = makeStyles({
 
 export const ButtonPrimary: React.FC<IButtonPrimary> = ({
   children,
+  customStyle,
   onClick,
 }) => {
   const classes = useStyles();
   return (
-    <ButtonBase onClick={onClick} className={classes.button}>
+    <ButtonBase style={customStyle} onClick={onClick} className={classes.button}>
       {children}
     </ButtonBase>
   );

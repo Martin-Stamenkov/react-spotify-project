@@ -16,12 +16,18 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
 import { useProfile } from "user";
 import { Spacer } from "components-lib/spacer";
+import { CreatePlaylist } from "playlist/api/requests";
 
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { userPlaylists } = useProfile();
-  
+  const { userPlaylists, profile } = useProfile();
+
+  const onNavigateAfterCreate = async () => {
+    const response = await CreatePlaylist(profile.id);
+    history.push(`/playlist/${response.id}`);
+  };
+
   return (
     <Drawer
       className={classes.drawer}
@@ -49,7 +55,11 @@ export const DrawerMenu = () => {
         </ListItem>
         <ListItem button>
           <AddIcon />
-          <ListItemText className={classes.items} primary="Create Playlist" />
+          <ListItemText
+            onClick={() => onNavigateAfterCreate()}
+            className={classes.items}
+            primary="Create Playlist"
+          />
         </ListItem>
         <ListItem onClick={() => history.push("/collection/tracks")} button>
           <FavoriteBorderIcon />

@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { CardContainer, CardMedia, Spacer } from "components-lib";
+import { FollowYourFirst } from "../components";
 import React from "react";
 import { useProfile } from "user";
 
@@ -15,6 +16,14 @@ export function Artists() {
 
 
   return (
+    <>
+    {followedArtists && followedArtists.items.length === 0 ? (
+      <FollowYourFirst
+        title="Follow your first artist"
+        description="Save artists by tapping the heart icon."
+        buttonTitle="Find Artists"
+      />
+    ) : (
     <>
       <CardContainer title="Artists">
         {followedArtists &&
@@ -35,5 +44,7 @@ export function Artists() {
       </CardContainer>
       <Spacer height={150} />
     </>
-  );
+  )}
+  </>
+  )
 }

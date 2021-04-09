@@ -3,6 +3,7 @@ import { CardContainer, CardMedia, Spacer } from "components-lib";
 import React from "react";
 import musicLogo from "assets/music_placeholder.png";
 import { useProfile } from "user";
+import { FollowYourFirst } from "../components";
 
 interface IUserPlaylist {
   id: string;
@@ -16,6 +17,14 @@ export function Playlists() {
   const { userPlaylists } = useProfile();
 
   return (
+    <>
+    {userPlaylists && userPlaylists.items.length === 0 ? (
+      <FollowYourFirst
+        title="Create your first playlist"
+        description="Create your first playlist"
+        buttonTitle="Create Playlist"
+      />
+    ) : (
     <>
       <CardContainer title="Playlist">
         {userPlaylists &&
@@ -44,5 +53,7 @@ export function Playlists() {
       </CardContainer>
       <Spacer height={150} />
     </>
-  );
+  )};
+  </>
+  )
 }

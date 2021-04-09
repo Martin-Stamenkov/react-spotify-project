@@ -10,5 +10,6 @@ export { Spinner } from "./spinner/Spinner";
 export { About } from "./about/About";
 export { Switch } from "./switch/Switch";
 export { Input } from "./input/Input";
+export { Dialog } from './dialog/Dialog'
 
 export { Button, Table };

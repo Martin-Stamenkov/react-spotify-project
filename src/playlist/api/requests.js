@@ -1,18 +1,38 @@
 import axios from "axios";
-import { playlistInfo } from "./endpoints";
-import { Storage } from "storage";
+import { addPlaylist, playlistInfo, removePlaylist } from "./endpoints";
+import { requestHeader } from "utils";
 
 export const getPlaylist = async (id) => {
-  return await axios
-    .get(playlistInfo(id), {
-      headers: {
-        Authorization: "Bearer " + Storage.getItem("accessToken"),
-      },
-    })
-    .then((response) => {
-      return response?.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const response = await axios.get(playlistInfo(id), {
+    headers: requestHeader,
+  });
+
+  return response.data;
+};
+
+export const CreatePlaylist = async (userId) => {
+  const response = await axios.post(
+    addPlaylist(userId),
+    {
+      name: "New Playlist",
+      description: "New playlist description",
+      public: false,
+    },
+    {
+      headers: requestHeader,
+    }
+  );
+
+  return response.data;
+};
+
+export const RemovePlaylist = async (id) => {
+  const response = await axios.delete(
+    removePlaylist(id),
+    {
+      headers: requestHeader,
+    }
+  );
+
+  return response.data;
 };

@@ -1,7 +1,7 @@
-import { Grid, makeStyles } from "@material-ui/core";
-import { CardContainer, CardMedia, Spacer, Typography } from "components-lib";
+import { Grid } from "@material-ui/core";
+import { CardContainer, CardMedia, Spacer } from "components-lib";
+import { FollowYourFirst } from "../components";
 import React from "react";
-import { Colors } from "styles";
 import { useProfile } from "user";
 
 interface IUserAlbums {
@@ -14,34 +14,17 @@ interface IUserAlbums {
   };
 }
 
-const useStyles = makeStyles(() => ({
-  followAlbumInfo: {
-    fontSize: 34,
-    color: Colors.White,
-  },
-  infoContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: "20%",
-  },
-}));
-
 export function Albums() {
   const { userAlbums } = useProfile();
-  const classes = useStyles();
 
   return (
     <>
       {userAlbums && userAlbums.items.length === 0 ? (
-        <Grid className={classes.infoContainer}>
-          <Typography className={classes.followAlbumInfo}>
-            Follow your first album
-          </Typography>
-          <Typography customStyle={{fontSize: 16}} className={classes.followAlbumInfo}>
-            Save albums by tapping the heart icon.
-          </Typography>
-        </Grid>
+        <FollowYourFirst
+          title="Follow your first album"
+          description="Save albums by tapping the heart icon."
+          buttonTitle="Find Albums"
+        />
       ) : (
         <>
           <CardContainer title="Albums">
