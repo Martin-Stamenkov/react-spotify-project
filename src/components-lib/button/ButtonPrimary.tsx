@@ -1,10 +1,17 @@
 import React, { CSSProperties, MouseEventHandler } from "react";
 import { Colors } from "styles";
-import { ButtonBase, makeStyles } from "@material-ui/core";
+import {
+  ButtonBase,
+  ExtendButtonBaseTypeMap,
+  makeStyles,
+} from "@material-ui/core";
+import { OverrideProps } from "@material-ui/core/OverridableComponent";
 
 interface IButtonPrimary {
   onClick?: MouseEventHandler<{}>;
-  customStyle?: CSSProperties
+  customStyle?: CSSProperties;
+  href?: { href: string } & OverrideProps<ExtendButtonBaseTypeMap<any>, "a">;
+  className?: string;
 }
 
 export const useStyles = makeStyles({
@@ -25,10 +32,17 @@ export const ButtonPrimary: React.FC<IButtonPrimary> = ({
   children,
   customStyle,
   onClick,
+  className,
+  href,
 }) => {
   const classes = useStyles();
   return (
-    <ButtonBase style={customStyle} onClick={onClick} className={classes.button}>
+    <ButtonBase
+      href={href}
+      style={customStyle}
+      onClick={onClick}
+      className={className ? className : classes.button}
+    >
       {children}
     </ButtonBase>
   );

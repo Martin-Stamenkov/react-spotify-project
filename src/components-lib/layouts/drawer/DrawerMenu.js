@@ -17,15 +17,23 @@ import { useHistory } from "react-router-dom";
 import { useProfile } from "user";
 import { Spacer } from "components-lib/spacer";
 import { CreatePlaylist } from "playlist/api/requests";
+import { getListOfCurrentUserPlaylists } from "user/api";
+import { useSnackbar } from "notistack";
 
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { userPlaylists, profile } = useProfile();
+  const { userPlaylists, profile, setPlaylists } = useProfile();
+  const { enqueueSnackbar } = useSnackbar();
+  
 
   const onNavigateAfterCreate = async () => {
     const response = await CreatePlaylist(profile.id);
+    const updatedPlaylists = await getListOfCurrentUserPlaylists();
+    setPlaylists(updatedPlaylists);
+
     history.push(`/playlist/${response.id}`);
+    enqueueSnackbar(`Added playlist ${response.name} to your library!`, { variant: "info" });
   };
 
   return (

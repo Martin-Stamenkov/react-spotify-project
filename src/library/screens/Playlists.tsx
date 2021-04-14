@@ -45,7 +45,6 @@ export function Playlists() {
                       ? `By ${userPlaylist.owner.display_name}`
                       : userPlaylist.description
                   }
-                  withFlex={false}
                 />
               </Grid>
             )

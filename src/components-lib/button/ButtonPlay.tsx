@@ -22,6 +22,8 @@ interface IButtonPlay {
     | undefined;
   width?: number;
   height?: number;
+  buttonBackgroundColor?: string;
+  buttonColor?: string;
 }
 
 export const useStyles = makeStyles({
@@ -38,6 +40,8 @@ export function ButtonPlay({
   withPadding,
   width = 40,
   height = 40,
+  buttonBackgroundColor,
+  buttonColor,
 }: IButtonPlay) {
   const classes = useStyles();
   return (
@@ -53,6 +57,8 @@ export function ButtonPlay({
       <PlayArrowIcon
         className={classes.playIcon}
         style={{
+          color: buttonColor,
+          backgroundColor: buttonBackgroundColor,
           width: width,
           height: height,
         }}

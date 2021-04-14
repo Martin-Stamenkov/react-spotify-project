@@ -22,7 +22,7 @@ export function LikedSongs() {
       ) : (
         <>
           <About
-            backgroundColor={Colors.White}
+            backgroundColor={Colors.Purple}
             name="Liked Songs"
             type="playlist"
             avatar={likedSongs}
@@ -30,6 +30,7 @@ export function LikedSongs() {
               data.total > 1 ? "songs" : "song"
             }`}
             infoAvatar={profile.images[0].url}
+            avatarBorderRadius={{borderRadius: 5}}
           />
           <Table.Container withBottomHeight withDateAdded>
             {data.items.map((song: any, index: number) => (

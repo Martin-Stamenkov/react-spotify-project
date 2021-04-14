@@ -32,7 +32,7 @@ export function Podcasts() {
                 <Grid item key={index}>
                   <CardMedia
                     id={podcast.show.id}
-                    // path={`/album/${podcast.show.id}`}
+                    path={`/show/${podcast.show.id}`}
                     image={podcast.show.images[0].url}
                     name={podcast.show.name}
                     description={podcast.show.description}

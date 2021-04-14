@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Typography, Spacer } from "components-lib";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "styles";
@@ -12,6 +12,7 @@ interface IAbout {
   backgroundColor?: string;
   backgroundImage?: string;
   infoAvatar?: string;
+  avatarBorderRadius?: CSSProperties | undefined;
 }
 
 export const useStyles = makeStyles({
@@ -61,6 +62,7 @@ export function About({
   backgroundColor,
   backgroundImage,
   infoAvatar,
+  avatarBorderRadius,
 }: IAbout) {
   const classes = useStyles();
 
@@ -70,14 +72,19 @@ export function About({
         className={classes.container}
         style={{
           background: `linear-gradient(${backgroundColor} , ${Colors.Black01})`,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
+          // backgroundImage: backgroundImage || `url(${backgroundImage})`,
+          // backgroundPosition: "center",
+          // backgroundSize: "cover",
+          // backgroundRepeat: "no-repeat",
         }}
       >
         {avatar ? (
-          <img className={classes.avatar} src={avatar} alt="Avatar" />
+          <img
+            className={classes.avatar}
+            style={avatarBorderRadius ? avatarBorderRadius : undefined}
+            src={avatar}
+            alt="Avatar"
+          />
         ) : null}
         <div className={classes.infoContainer}>
           <Typography variant="body1" className={classes.info}>

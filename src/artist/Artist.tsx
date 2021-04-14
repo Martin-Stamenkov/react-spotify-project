@@ -50,7 +50,6 @@ export function Artist() {
                     : "Removed from your library",
                   { variant: "info" }
                 );
-                console.log(followedArtists);
               }}
             >
               {!artistIsFollowed ? "Follow" : "Unfollow"}

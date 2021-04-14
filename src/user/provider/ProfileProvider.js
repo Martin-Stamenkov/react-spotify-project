@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useContext,
+  useCallback,
 } from "react";
 import {
   getCurrentUserSavedAlbums,
@@ -23,6 +24,10 @@ export function ProfileProvider({ children }) {
   const [userPlaylists, setUserPlaylists] = useState(null);
   const [userAlbums, setUserAlbums] = useState(null);
   const [userShows, setUserShows] = useState(null);
+
+  const setPlaylists = useCallback((playlists) => {
+    setUserPlaylists(playlists);
+  }, []);
 
   useEffect(() => {
     async function UserData() {
@@ -71,8 +76,9 @@ export function ProfileProvider({ children }) {
       userPlaylists,
       userAlbums,
       userShows,
+      setPlaylists,
     }),
-    [profile, followedArtists, userPlaylists, userAlbums, userShows]
+    [profile, followedArtists, userPlaylists, userAlbums, userShows, setPlaylists]
   );
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

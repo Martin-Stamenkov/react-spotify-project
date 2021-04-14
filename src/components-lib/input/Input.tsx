@@ -1,28 +1,37 @@
-import { makeStyles, TextField } from "@material-ui/core";
+import { OutlinedInputProps, TextField } from "@material-ui/core";
 import React from "react";
-import { Colors } from "styles";
-const useStyles = makeStyles({
-  input: {
-    backgroundColor: Colors.White,
-    borderRadius: 50,
-    width: '40%',
-    '& .MuiOutlinedInput-root': {
-        borderRadius: 50,
-        height: 40
-    }
-  },
-});
 
-export function Input() {
-  const classes = useStyles();
+interface IInput {
+  id?: string;
+  className?: string;
+  multiline?: boolean;
+  placeholder?: string;
+  rows?: string | number;
+  defaultValue?: unknown;
+  inputProps?: OutlinedInputProps['inputProps'];
+}
+
+export function Input({
+  id,
+  className,
+  multiline,
+  placeholder,
+  rows,
+  defaultValue,
+  inputProps
+}: IInput) {
   return (
     <>
       <TextField
-        className={classes.input}
-        id="input"
-        placeholder="Placeholder"
+        defaultValue={defaultValue}
+        multiline={multiline}
+        className={className}
+        rows={rows}
+        id={id}
+        placeholder={placeholder}
         margin="normal"
         variant="outlined"
+        inputProps={inputProps}
       />
     </>
   );

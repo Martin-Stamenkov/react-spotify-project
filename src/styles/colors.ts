@@ -4,10 +4,13 @@ export const colors = {
 
   Grey: "#999999",
   Grey01: "rgb(64 63 63 / 92%)",
-  Grey02: "#7d7a7a",
+  Grey02: "#b3b3b3",
+  Grey03: '#282828',
 
   Black: "#0c0c0c",
   Black01: "#1b1717",
 
   MainGreen: "#52d869",
+
+  Purple: "#5032b0"
 };

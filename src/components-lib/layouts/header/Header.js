@@ -79,17 +79,15 @@ const Header = (props) => {
             >
               <NavigateNextIcon />
             </Button.Icon>
-            {props.location.pathname === "/search" ? <Input /> : null}
-            {props.location.pathname.includes("/collection") ? <Library /> : null}
+            {props.location.pathname === "/search" ? <Input placeholder="Search ..." className={classes.input} /> : null}
+            {props.location.pathname.includes("/collection") && !props.location.pathname.includes("/tracks") ? <Library /> : null}
           </div>
           {!profile ? (
-            <MButton
-              color="primary"
-              className="btn btn--loginApp-link"
-              href={login}
-            >
-              Login In
-            </MButton>
+            <Button.Primary
+              href={login}>
+              Log In
+            </Button.Primary>
+          
           ) : (
             profile && (
               <MButton className={classes.chip} onClick={handleClick}>

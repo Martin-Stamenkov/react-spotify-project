@@ -80,7 +80,7 @@ export function TopTracks() {
             control={<Switch checked={checked} onChange={handleChange} />}
             label={
               <Typography customStyle={{ color: Colors.WD1F0000 }}>
-                {hasMoreThanFivePopularSongs ? "Show more" : "Show top songs"}
+                {!checked ? "Show more" : "Show less"}
               </Typography>
             }
           />

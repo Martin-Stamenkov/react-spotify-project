@@ -9,6 +9,7 @@ import { GenreDetails, MorePlaylists } from "genre";
 import { Playlists, Artists, Albums, Podcasts } from "library";
 import { LikedSongs } from "liked-songs";
 import { uniqueId } from "utils";
+import { Podcast } from "podcast";
 
 export function Router() {
   const { profile } = useProfile();
@@ -47,6 +48,7 @@ export function Router() {
           <Route path="/collection/artists" component={Artists} />
           <Route path="/collection/albums" component={Albums} />
           <Route path="/collection/podcasts" component={Podcasts} />
+          <Route path="/show/:id" component={Podcast} />
         </Switch>
       )}
     </>

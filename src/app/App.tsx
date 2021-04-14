@@ -18,15 +18,15 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Router history={history}>
-            <ProfileProvider>
-              <Layouts>
-                <SnackbarProvider maxSnack={3}>
+          <SnackbarProvider maxSnack={3}>
+            <Router history={history}>
+              <ProfileProvider>
+                <Layouts>
                   <Routes />
-                </SnackbarProvider>
-              </Layouts>
-            </ProfileProvider>
-          </Router>
+                </Layouts>
+              </ProfileProvider>
+            </Router>
+          </SnackbarProvider>
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
