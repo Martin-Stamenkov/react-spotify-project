@@ -1,13 +1,11 @@
 import axios from "axios";
-import { categories, categoryPlaylists } from "./endpoints";
-import { Storage } from "../storage";
+import { categories, categoryPlaylists, search } from "./endpoints";
+import { requestHeader } from "utils";
 
 export const getListOfCategories = async (limit) => {
   const listCategories = await axios
     .get(categories(limit), {
-      headers: {
-        Authorization: "Bearer " + Storage.getItem("accessToken"),
-      },
+      headers: requestHeader,
     })
     .then((response) => {
       return response;
@@ -22,9 +20,7 @@ export const getListOfCategories = async (limit) => {
 export const getCategoryPlaylists = async (id, offset) => {
   return await axios
     .get(categoryPlaylists(id, offset), {
-      headers: {
-        Authorization: "Bearer " + Storage.getItem("accessToken"),
-      },
+      headers: requestHeader,
     })
     .then((response) => {
       return response?.data?.playlists;
@@ -32,4 +28,10 @@ export const getCategoryPlaylists = async (id, offset) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+export const getResultFromSearch = async (query) => {
+  const response = await axios.get(search(query), { headers: requestHeader });
+
+  return response.data;
 };

@@ -16,11 +16,22 @@ import { MoreAlbums } from "./more-albums/MoreAlbums";
 import { withRouter } from "react-router";
 import { format, parseISO } from "date-fns";
 
+interface ITrack {
+  id: string;
+  album: {
+    id:string,
+    name: string,
+    images: { url: string }[];
+  }
+  name: string;
+  duration_ms: string;
+  artists: any;
+}
+
 export function Album() {
   const { id }: { id: string } = useParams();
 
   const { data, status } = useQuery("album", async () => await getAlbum(id));
-
   return (
     <>
       {!data && status === "loading" ? (
@@ -41,7 +52,7 @@ export function Album() {
             }`}
           />
           <Table.Container withAlbum={false}>
-            {data.tracks.items.map((track: any, index: number) => (
+            {data.tracks.items.map((track: ITrack, index: number) => (
               <Table.Row key={index} hover>
                 <Table.Cell>
                   <div
@@ -66,7 +77,7 @@ export function Album() {
                       marginLeft: 15,
                     }}
                   >
-                    {track.artists.map(
+                    {track && track.artists.map(
                       (x: { id: string; name: string }, index: number) => (
                         <div key={index}>
                           <Button.Link to={`/artists/${x.id}`}>

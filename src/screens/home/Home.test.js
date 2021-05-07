@@ -5,11 +5,10 @@ import { ProfileProvider } from "user";
 
 describe(Home.name, () => {
   it("Should render the home screen", () => {
-    const { getByText, debug } = render(
+    const { getByText } = render(
       <ProfileProvider>
         <Home />
       </ProfileProvider>
     );
-
   });
 });

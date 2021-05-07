@@ -18,6 +18,7 @@ import { Storage } from "storage";
 import { login } from "auth";
 import { useHistory, withRouter } from "react-router-dom";
 import { Library } from "library";
+import { useSearch } from "screens/search/provider/SearchProvider";
 
 // Get the hash of the url
 const hash = window.location.hash
@@ -41,6 +42,14 @@ const Header = (props) => {
     disableHysteresis: true,
     threshold: 100,
   });
+  const { searchForAnItem, setResult } = useSearch();
+
+  useEffect(() => {
+    let _token = hash.access_token;
+    if (_token) {
+      Storage.setItem("accessToken", _token);
+    }
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,12 +59,14 @@ const Header = (props) => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    let _token = hash.access_token;
-    if (_token) {
-      Storage.setItem("accessToken", _token);
+  const handleChangeSearchItem = (event) => {
+    const value = event.target.value
+
+    searchForAnItem(value)
+    if (value === "") {
+      setResult(null)
     }
-  }, []);
+  }
 
   return (
     <div className={classes.root}>
@@ -79,15 +90,20 @@ const Header = (props) => {
             >
               <NavigateNextIcon />
             </Button.Icon>
-            {props.location.pathname === "/search" ? <Input placeholder="Search ..." className={classes.input} /> : null}
-            {props.location.pathname.includes("/collection") && !props.location.pathname.includes("/tracks") ? <Library /> : null}
+            {props.location.pathname === "/search" ? (
+              <Input
+                onChange={handleChangeSearchItem}
+                placeholder="Search artists and songs ..."
+                className={classes.input}
+              />
+            ) : null}
+            {props.location.pathname.includes("/collection") &&
+            !props.location.pathname.includes("/tracks") ? (
+              <Library />
+            ) : null}
           </div>
           {!profile ? (
-            <Button.Primary
-              href={login}>
-              Log In
-            </Button.Primary>
-          
+            <Button.Primary href={login}>Log In</Button.Primary>
           ) : (
             profile && (
               <MButton className={classes.chip} onClick={handleClick}>

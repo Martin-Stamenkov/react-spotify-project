@@ -8,6 +8,7 @@ import { SnackbarProvider } from "notistack";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createBrowserHistory } from "history";
+import { SearchProvider } from "screens";
 
 const history = createBrowserHistory();
 
@@ -21,9 +22,11 @@ function App() {
           <SnackbarProvider maxSnack={3}>
             <Router history={history}>
               <ProfileProvider>
-                <Layouts>
-                  <Routes />
-                </Layouts>
+                <SearchProvider>
+                  <Layouts>
+                    <Routes />
+                  </Layouts>
+                </SearchProvider>
               </ProfileProvider>
             </Router>
           </SnackbarProvider>

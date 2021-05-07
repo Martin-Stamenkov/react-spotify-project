@@ -21,7 +21,7 @@ export const CardContainer: React.FC<ICardContainer> = ({
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
         <Typography
@@ -31,10 +31,14 @@ export const CardContainer: React.FC<ICardContainer> = ({
         >
           {title}
         </Typography>
-        {withSeeAllFlag ? <Button.Link to={path}>see all</Button.Link> : null}
+        {withSeeAllFlag ? (
+          <Button.Link customStyle={{ marginRight: 20, fontSize: 16  }} to={path}>
+            SEE ALL
+          </Button.Link>
+        ) : null}
       </div>
       <Spacer height={20} />
-      <Grid container spacing={3}>
+      <Grid container spacing={5}>
         {children}
       </Grid>
       <Spacer height={20} />

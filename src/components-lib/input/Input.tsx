@@ -1,5 +1,5 @@
-import { OutlinedInputProps, TextField } from "@material-ui/core";
 import React from "react";
+import { OutlinedInputProps, TextField } from "@material-ui/core";
 
 interface IInput {
   id?: string;
@@ -8,7 +8,10 @@ interface IInput {
   placeholder?: string;
   rows?: string | number;
   defaultValue?: unknown;
-  inputProps?: OutlinedInputProps['inputProps'];
+  inputProps?: OutlinedInputProps["inputProps"];
+  value?: unknown;
+  onChange?: OutlinedInputProps["onChange"];
+  name?: string;
 }
 
 export function Input({
@@ -18,11 +21,16 @@ export function Input({
   placeholder,
   rows,
   defaultValue,
-  inputProps
+  inputProps,
+  value,
+  onChange,
+  name,
 }: IInput) {
   return (
     <>
       <TextField
+        onChange={onChange}
+        value={value}
         defaultValue={defaultValue}
         multiline={multiline}
         className={className}
@@ -32,6 +40,7 @@ export function Input({
         margin="normal"
         variant="outlined"
         inputProps={inputProps}
+        name={name}
       />
     </>
   );

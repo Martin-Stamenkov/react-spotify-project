@@ -7,6 +7,7 @@ import { RelatedArtists, Albums } from "./components";
 import { TopTracks } from "./components/top-tracks/TopTracks";
 import { useProfile } from "user";
 import { useSnackbar } from "notistack";
+import  avatar from "assets/avatar.png" 
 
 export function Artist() {
   const { id }: { id: string } = useParams();
@@ -32,7 +33,7 @@ export function Artist() {
           <About
             type={data.type}
             name={data.name}
-            avatar={data.images[0].url}
+            avatar={data.images.length > 0 ?  data.images[0].url : avatar}
             description={`Genres: ${data.genres
               .map((x: string) => x)
               .join(", ")}`}

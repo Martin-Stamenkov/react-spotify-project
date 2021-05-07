@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, About, Spinner, Button,  Dialog } from "components-lib";
 import { useHistory, useParams } from "react-router-dom";
-import { getPlaylist, RemovePlaylist } from "./api/requests";
+import { EditPlaylistDetails, getPlaylist, RemovePlaylist } from "./api/requests";
 import { format, parseISO } from "date-fns";
 import { millisecondsConverter } from "utils";
 import { useQuery } from "react-query";
@@ -17,9 +17,14 @@ export function Playlist() {
   );
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [playlist, setPlaylist] = useState(false);
   const history = useHistory();
   const { userPlaylists, setPlaylists, profile } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
+  const [inputs, setInputs] = useState({
+    name: "",
+    description: ""
+  })
 
   useEffect(() => {
     window.scrollTo({
@@ -27,7 +32,14 @@ export function Playlist() {
     });
   }, []);
 
-  console.log(data);
+  useEffect(() => {
+   playlist && setInputs({...inputs, name: playlist.name, description: playlist.description})
+       // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playlist])
+
+  useEffect(() => {
+    setPlaylist(data)
+  }, [data])
 
   const handleDeleteClick = () => {
     setOpenDeleteDialog(true);
@@ -41,9 +53,21 @@ export function Playlist() {
     enqueueSnackbar(`Removed from your library!`, { variant: "info" });
   };
 
-  const handleUpdatePlaylist = async () => {};
+  const handleUpdatePlaylist = async () => {
+    await EditPlaylistDetails(id, inputs.name, inputs.description);
+    const updatedPlaylist = await getPlaylist(id);
+    setPlaylist(updatedPlaylist)
+    enqueueSnackbar(`The details for the current playlist was edited!`, { variant: "info" });
+    setOpenEditDialog(false)
+  };
 
-  // console.log(userPlaylists)
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setInputs({
+      ...inputs,
+      [evt.target.name]: value
+    });
+  }
 
   return (
     <>
@@ -51,18 +75,18 @@ export function Playlist() {
         <Spinner />
       ) : (
         <>
-          {data && (
+          {playlist && (
             <>
               <About
-                backgroundColor={data.primary_color && data.primary_color}
-                type={data.type}
-                avatar={data.images.length > 0 ? data.images[0].url : avatar}
-                name={data.name}
+                backgroundColor={playlist.primary_color && playlist.primary_color}
+                type={playlist.type}
+                avatar={playlist.images.length > 0 ? playlist.images[0].url : avatar}
+                name={playlist.name}
                 avatarBorderRadius={{ borderRadius: 5 }}
-                description={data.description}
-                additionalInfo={`${data.owner.display_name} \n\u2022 Followers ${data.followers.total} \n\u2022 ${data.tracks.items.length} songs`}
+                description={playlist.description}
+                additionalInfo={`${playlist.owner.display_name} \n\u2022 Followers ${playlist.followers.total} \n\u2022 ${playlist.tracks.items.length} songs`}
               />
-              {data.owner.display_name === profile.display_name ? (
+              {playlist.owner.display_name === profile.display_name ? (
                 <>
                   <Button.Primary onClick={() => setOpenEditDialog(true)}>
                     Edit
@@ -72,11 +96,14 @@ export function Playlist() {
                     buttonTitle="Save"
                     src={avatar}
                     open={openEditDialog}
-                    playlistTitle={data.name}
-                    playlistDescription={data.description}
+                    playlistTitle={playlist.name}
+                    playlistDescription={playlist.description}
                     handleClose={() => setOpenEditDialog(false)}
                     handleClickCancel={() => setOpenEditDialog(false)}
                     handleClick={handleUpdatePlaylist}
+                    onChange={handleChange}
+                    titleName="name"
+                    descriptionName="description"
                   />
                   <Button.Primary
                     onClick={handleDeleteClick}
@@ -85,7 +112,7 @@ export function Playlist() {
                     Delete
                   </Button.Primary>
                   <Dialog.Base
-                    title={`Delete ${data.name}?`}
+                    title={`Delete ${playlist.name}?`}
                     description="This action cannot be undone."
                     buttonTitle="Delete"
                     open={openDeleteDialog}
@@ -96,16 +123,16 @@ export function Playlist() {
                 </>
               ) : null}
               <>
-                {data.tracks.items.length === 0 ? null : (
+                {playlist.tracks.items.length === 0 ? null : (
                   <>
                     <Table.Container withBottomHeight withDateAdded>
-                      {data.tracks.items.map((item, index) => (
+                      {playlist.tracks.items.map((item, index) => (
                         <Table.Row key={index} hover>
                           <Table.Cell>
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              {data.tracks.items.indexOf(item) + 1}
+                              {playlist.tracks.items.indexOf(item) + 1}
                               <img
                                 style={{
                                   width: 40,

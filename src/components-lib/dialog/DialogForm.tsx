@@ -8,6 +8,7 @@ import {
   Grid,
   makeStyles,
   ModalProps,
+  OutlinedInputProps,
 } from "@material-ui/core";
 import { Input } from "../input";
 import { Button, Typography } from "components-lib";
@@ -24,6 +25,11 @@ interface IDialogForm {
   handleClickCancel?: MouseEventHandler<{}>;
   playlistDescription?: string;
   playlistTitle?: string;
+  titleValue?: unknown;
+  descriptionValue?: unknown;
+  onChange?: OutlinedInputProps["onChange"];
+  titleName?: string;
+  descriptionName?: string;
 }
 
 export const useStyles = makeStyles(() => ({
@@ -39,6 +45,19 @@ export const useStyles = makeStyles(() => ({
   textColor: {
     color: Colors.White,
   },
+  input: {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: Colors.Grey,
+      },
+      "&:hover fieldset": {
+        borderColor: Colors.Grey,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: Colors.Grey02,
+      },
+    },
+  },
 }));
 
 export function DialogForm({
@@ -51,7 +70,12 @@ export function DialogForm({
   handleClickCancel,
   playlistDescription,
   playlistTitle,
+  titleValue,
+  descriptionValue,
   src,
+  onChange,
+  titleName,
+  descriptionName
 }: IDialogForm) {
   const classes = useStyles();
 
@@ -72,18 +96,26 @@ export function DialogForm({
             />
             <Grid className={classes.inputsContainer}>
               <Input
+                onChange={onChange}
                 inputProps={{
                   className: classes.textColor,
                 }}
+                value={titleValue}
+                className={classes.input}
                 defaultValue={playlistTitle}
+                name={titleName}
               />
               <Input
+                onChange={onChange}
+                value={descriptionValue}
                 inputProps={{
                   className: classes.textColor,
                 }}
+                className={classes.input}
                 multiline
                 defaultValue={playlistDescription}
                 rows={4}
+                name={descriptionName}
               />
             </Grid>
           </DialogContent>

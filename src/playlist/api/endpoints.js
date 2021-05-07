@@ -13,4 +13,8 @@ export const addPlaylist = (user_id) =>
 export const removePlaylist = (playlist_id) =>
   `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}/followers`;
 
+// PUT
+
+export const editPlaylist = (playlist_id) => `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}`
+
 

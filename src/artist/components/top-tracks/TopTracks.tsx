@@ -13,6 +13,16 @@ import { useParams } from "react-router-dom";
 import { Colors } from "styles";
 import { millisecondsConverter } from "utils";
 import { Collapse, FormControlLabel } from "@material-ui/core";
+interface ITrack {
+  id: string;
+  album: {
+    id:string,
+    name: string,
+    images: { url: string }[];
+  }
+  name: string;
+  duration_ms: string;
+}
 
 export function TopTracks() {
   const { id }: { id: string } = useParams();
@@ -47,7 +57,7 @@ export function TopTracks() {
           >
             <Table.Container>
               {data &&
-                data.tracks.map((track: any) => (
+                data.tracks.map((track: ITrack) => (
                   <Table.Row key={track.id} hover>
                     <Table.Cell>
                       <div style={{ display: "flex", alignItems: "center" }}>
