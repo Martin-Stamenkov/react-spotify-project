@@ -11,7 +11,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   indicator: {
     display: "none",
-    marginLeft: 30,
   },
 }));
 

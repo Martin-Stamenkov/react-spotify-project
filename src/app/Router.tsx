@@ -1,7 +1,7 @@
 import React from "react";
 import { useProfile, UserProfilePage } from "user";
 import { Route, Switch } from "react-router-dom";
-import { Home, Search } from "screens";
+import { Home, Search, Songs, Artists as ArtistsFromSearch } from "screens";
 import { Playlist } from "playlist";
 import { Artist, Discography } from "artist";
 import { Album } from "album";
@@ -25,7 +25,9 @@ export function Router() {
           <Route exact path="/" component={Home} />
           <Route path="/profile" component={UserProfilePage} />
           <Route path="/home" component={Home} />
-          <Route path="/search" component={Search} />
+          <Route exact path="/search" component={Search} />
+          <Route path="/search/songs/:id" component={Songs} />
+          <Route path="/search/artists/:id" component={ArtistsFromSearch} />
           <Route
             path="/playlist/:id"
             render={() => <Playlist key={uniqueId()} />}

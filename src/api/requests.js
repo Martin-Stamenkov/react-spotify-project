@@ -30,8 +30,8 @@ export const getCategoryPlaylists = async (id, offset) => {
     });
 };
 
-export const getResultFromSearch = async (query) => {
-  const response = await axios.get(search(query), { headers: requestHeader });
+export const getResultFromSearch = async (query, limit, offset) => {
+  const response = await axios.get(search(query, limit, offset), { headers: requestHeader });
 
   return response.data;
 };

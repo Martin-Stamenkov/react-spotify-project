@@ -9,6 +9,7 @@ import {
 import { Grid } from "@material-ui/core";
 import avatar from "assets/avatar.png";
 import { millisecondsConverter } from "utils";
+import { useSearch } from "../provider";
 
 interface IArtist {
   id: string;
@@ -28,12 +29,14 @@ interface ITrack {
   duration_ms: string;
 }
 
-export function ItemsResult({ result }: any) {
+export function ItemsResult() {
+  const { result, query }: any = useSearch();
+
   return (
     <>
       {result.tracks.items.length > 0 ? (
         <>
-          <CardContainer withSeeAllFlag title="Songs">
+          <CardContainer withSeeAllFlag path={`search/songs/${query}`} title="Songs">
             <Table.Container>
               {result.tracks.items.map((track: ITrack) => (
                 <Table.Row key={track.id} hover>
@@ -68,7 +71,7 @@ export function ItemsResult({ result }: any) {
       ) : null}
       {result.artists.items.length > 0 ? (
         <>
-          <CardContainer withSeeAllFlag title="Artists">
+          <CardContainer withSeeAllFlag path={`search/artists/${query}`} title="Artists">
             {result.artists.items.map((artist: IArtist, index: number) => (
               <Grid key={index} item>
                 <CardMedia

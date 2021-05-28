@@ -1,23 +1,36 @@
 import { getResultFromSearch } from "api/requests";
-import React, { createContext, useMemo, useState, useContext, useCallback } from "react";
+import React, {
+  createContext,
+  useMemo,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 
 const SearchContext: any = createContext(null);
 
 export const SearchProvider: React.FC<{}> = ({ children }) => {
   const [result, setResult] = useState(null);
+  const [query, setQuery] = useState("");
 
-  const searchForAnItem = useCallback(async (query: string) => {
-    const response = await getResultFromSearch(query);
-    setResult(response);
-  }, []);
-
+  const searchForAnItem = useCallback(
+    async (query: string, limit: number, offset: number) => {
+      const response = await getResultFromSearch(query, limit, offset);
+      setResult(response);
+      setQuery(query);
+    },
+    []
+  );
+  
   const value = useMemo(
     () => ({
       searchForAnItem,
       result,
       setResult,
+      query,
+      setQuery,
     }),
-    [searchForAnItem, result, setResult]
+    [searchForAnItem, result, setResult, query, setQuery]
   );
 
   return (

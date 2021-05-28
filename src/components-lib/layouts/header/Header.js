@@ -20,6 +20,8 @@ import { useHistory, withRouter } from "react-router-dom";
 import { Library } from "library";
 import { useSearch } from "screens/search/provider/SearchProvider";
 
+const searchLimit = 10;
+const initialOffset = 5;
 // Get the hash of the url
 const hash = window.location.hash
   .substring(1)
@@ -62,7 +64,7 @@ const Header = (props) => {
   const handleChangeSearchItem = (event) => {
     const value = event.target.value
 
-    searchForAnItem(value)
+    searchForAnItem(value, searchLimit, initialOffset)
     if (value === "") {
       setResult(null)
     }
