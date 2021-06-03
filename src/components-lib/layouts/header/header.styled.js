@@ -75,7 +75,6 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 50,
     width: '40%',
     '& .MuiOutlinedInput-root': {
-        borderRadius: 50,
         height: 40
     }
   },

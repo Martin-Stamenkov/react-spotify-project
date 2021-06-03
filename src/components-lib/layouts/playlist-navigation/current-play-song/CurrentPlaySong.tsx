@@ -2,9 +2,9 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import avatar from "assets/music_placeholder.png";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { Link } from "react-router-dom";
-import { useStyles } from "./play-list-content.styles";
+import { useStyles } from "./current-play-song.styles";
+import { Button } from "components-lib";
 
 export const PlayListContent = () => {
   const classes = useStyles();
@@ -20,9 +20,7 @@ export const PlayListContent = () => {
           <Link to="">Mac Miller</Link>
         </CardContent>
       </div>
-      <Link to="" className={classes.favoriteIcon}>
-        <FavoriteBorderIcon />
-      </Link>
+      <Button.Favorite />
     </Grid>
   );
 };

@@ -7,7 +7,7 @@ import { useSearch } from "../provider";
 import { Storage } from 'storage'
 import { Grid } from "@material-ui/core";
 
-interface ITrack {
+interface IArtist {
     id: string;
     type: string;
     images: { url: string }[];
@@ -74,7 +74,7 @@ export function Artists() {
     return (
         <>
             <CardContainer title={`All artists for “${Storage.getItem("query")}”`}>
-                {checkForData().map((artist: ITrack) => (
+                {checkForData().map((artist: IArtist) => (
                     <Grid key={artist.id} item>
                         <CardMedia
                             path={`../../artists/${artist.id}`}

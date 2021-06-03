@@ -1,9 +1,17 @@
 import axios from "axios";
-import { addPlaylist, editPlaylist, playlistInfo, removePlaylist } from "./endpoints";
+import { addPlaylist, editPlaylist, playlistInfo, removePlaylist, followPlaylist, checkPlaylist } from "./endpoints";
 import { requestHeader } from "utils";
 
 export const getPlaylist = async (id) => {
   const response = await axios.get(playlistInfo(id), {
+    headers: requestHeader,
+  });
+
+  return response.data;
+};
+
+export const CheckIfUserFollowPlaylist = async (id, ids) => {
+  const response = await axios.get(checkPlaylist(id, ids), {
     headers: requestHeader,
   });
 
@@ -29,6 +37,17 @@ export const CreatePlaylist = async (userId) => {
 export const RemovePlaylist = async (id) => {
   const response = await axios.delete(
     removePlaylist(id),
+    {
+      headers: requestHeader,
+    }
+  );
+
+  return response.data;
+};
+
+export const FollowPlaylist = async (id) => {
+  const response = await axios.put(
+    followPlaylist(id),{},
     {
       headers: requestHeader,
     }

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 export const TableContainer: React.FC<ITableContainer> = ({
   children,
   withDateAdded,
-  withBottomHeight,
+  withBottomHeight = true,
   withAlbum = true,
 }) => {
   const classes = useStyles();

@@ -12,3 +12,6 @@ export const artistsTopTracks = (id: string) =>
 
 export const follow = (id: string) =>
   `${process.env.REACT_APP_BASE_URL}/me/following?type=artist&ids=${id}`;
+  
+export const unfollow = (id: string) =>
+  `${process.env.REACT_APP_BASE_URL}/me/following?type=artist&ids=${id}`;

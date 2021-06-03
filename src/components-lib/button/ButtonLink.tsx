@@ -27,7 +27,7 @@ export const ButtonLink: React.FC<IButtonLink> = ({
 }) => {
   const classes = useStyles();
   return (
-    <Link to={to} style={customStyle} className={classes.link}>
+    <Link  to={to} style={customStyle} className={classes.link}>
       {children}
     </Link>
   );

@@ -18,7 +18,7 @@ import { Storage } from "storage";
 import { login } from "auth";
 import { useHistory, withRouter } from "react-router-dom";
 import { Library } from "library";
-import { useSearch } from "screens/search/provider/SearchProvider";
+import { useSearch } from "screens";
 
 const searchLimit = 10;
 const initialOffset = 5;

@@ -1,25 +1,27 @@
 import React, { CSSProperties } from "react";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from '@material-ui/icons/Pause';
 import { Colors } from "styles";
 import { makeStyles } from "@material-ui/core";
+import { useState } from "react";
 
 interface IButtonPlay {
   className?: string;
   style?: CSSProperties;
   withPadding?: boolean;
   position?:
-    | "-moz-initial"
-    | "inherit"
-    | "initial"
-    | "revert"
-    | "unset"
-    | "fixed"
-    | "-webkit-sticky"
-    | "absolute"
-    | "relative"
-    | "static"
-    | "sticky"
-    | undefined;
+  | "-moz-initial"
+  | "inherit"
+  | "initial"
+  | "revert"
+  | "unset"
+  | "fixed"
+  | "-webkit-sticky"
+  | "absolute"
+  | "relative"
+  | "static"
+  | "sticky"
+  | undefined;
   width?: number;
   height?: number;
   buttonBackgroundColor?: string;
@@ -42,27 +44,37 @@ export function ButtonPlay({
   height = 40,
   buttonBackgroundColor,
   buttonColor,
+  style
 }: IButtonPlay) {
   const classes = useStyles();
+  const [isPlayed, setIsPlayed] = useState(false)
+
+  const iconOverrideStyle = {
+    color: buttonColor,
+    backgroundColor: buttonBackgroundColor,
+    width: width,
+    height: height,
+  }
+
   return (
     <span
+      onClick={(e) => (e.stopPropagation(), setIsPlayed(isPlayed => !isPlayed))}
       className={className}
-      style={{
+      style={style ? style : {
         bottom: 100,
         right: 20,
         padding: withPadding ? 10 : 0,
         position: position,
       }}
     >
-      <PlayArrowIcon
+      {!isPlayed ? <PlayArrowIcon
         className={classes.playIcon}
-        style={{
-          color: buttonColor,
-          backgroundColor: buttonBackgroundColor,
-          width: width,
-          height: height,
-        }}
-      />
+        style={iconOverrideStyle}
+      /> : <PauseIcon
+        className={classes.playIcon}
+        style={iconOverrideStyle}
+      />}
     </span>
   );
 }
+

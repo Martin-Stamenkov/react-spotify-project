@@ -8,7 +8,7 @@ import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import LoopIcon from "@material-ui/icons/Loop";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { VolumeSlider } from "./volume-slider/VolumeSlider";
-import { PlayListContent } from "./play-list-content/PlayListContent";
+import { PlayListContent } from "./current-play-song/CurrentPlaySong";
 import { Button } from "components-lib";
 
 export const PlayListNavigation = () => {

@@ -23,12 +23,6 @@ export const useStyles = makeStyles((theme) => ({
             },
         },
     },
-    favoriteIcon: {
-        color: "#7d7a7a",
-        "&:hover": {
-            color: "#ffffff",
-        },
-    },
     cover: {
         width: 60,
         boxShadow: "3px 0px 18px #080707",

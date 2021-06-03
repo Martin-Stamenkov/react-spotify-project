@@ -64,7 +64,7 @@ export const DrawerMenu = () => {
         <ListItem button>
           <AddIcon />
           <ListItemText
-            onClick={() => onNavigateAfterCreate()}
+            onClick={onNavigateAfterCreate}
             className={classes.items}
             primary="Create Playlist"
           />

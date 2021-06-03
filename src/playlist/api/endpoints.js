@@ -3,6 +3,9 @@
 export const playlistInfo = (playlist_id) =>
   `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}`;
 
+export const checkPlaylist = (playlist_id, ids) =>
+  `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}/followers/contains?ids=${ids}`;
+
 // POST
 
 export const addPlaylist = (user_id) =>
@@ -16,5 +19,8 @@ export const removePlaylist = (playlist_id) =>
 // PUT
 
 export const editPlaylist = (playlist_id) => `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}`
+
+export const followPlaylist = (playlist_id) =>
+  `${process.env.REACT_APP_BASE_URL}/playlists/${playlist_id}/followers`;
 
 

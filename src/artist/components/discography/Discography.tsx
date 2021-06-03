@@ -5,7 +5,7 @@ import { Albums } from "../albums";
 export function Discography() {
   return (
     <>
-      <Albums albumLimit={20} />
+      <Albums withSeeAllFlag={false} albumLimit={20} />
       <Spacer height={100} />
     </>
   );

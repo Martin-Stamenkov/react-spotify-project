@@ -32,7 +32,9 @@ export function Router() {
             path="/playlist/:id"
             render={() => <Playlist key={uniqueId()} />}
           />
-          <Route path="/album/:id" component={Album} />
+          <Route
+            path="/album/:id" render={() => <Album key={uniqueId()} />}
+          />
           <Route
             exact
             path="/artists/:id"

@@ -9,6 +9,7 @@ import {
 import { Button, Typography, Spacer } from "components-lib";
 import { Colors } from "styles";
 import { truncate } from "utils";
+import { useHistory } from "react-router";
 
 interface ICardMedia {
   id?: string;
@@ -19,7 +20,7 @@ interface ICardMedia {
   withCircleAvatar?: boolean;
   withFlex?: boolean;
   withPlayButton?: boolean;
-  path?: string;
+  path?: any;
   onClick?: MouseEventHandler<{}>;
   height?: number;
   width?: number;
@@ -78,15 +79,14 @@ export function CardMedia({
   width,
   imageMarginTop = defaultValues.imageMarginTop,
   titlePosition = "inherit",
-  onClick,
 }: ICardMedia) {
   const classes = useStyles();
+  const history = useHistory()
 
   return (
     <Card style={{ height: height, width: width }} className={classes.root}>
-      <Button.Link to={path}>
         <CardActionArea
-          onClick={onClick}
+          onClick={() => history.push(path)}
           style={{
             display: withFlex ? "flex" : "block",
             flexDirection: "column",
@@ -132,7 +132,6 @@ export function CardMedia({
           ) : null}
         </CardActionArea>
         <Spacer height={150} />
-      </Button.Link>
     </Card>
   );
 }

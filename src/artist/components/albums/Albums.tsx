@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 
 interface IAlbums {
   albumLimit?: number;
+  withSeeAllFlag?: boolean
 }
 
 interface IAlbum {
@@ -19,7 +20,7 @@ interface IAlbum {
 
 const defaultAlbumLimit = 7;
 
-export function Albums({ albumLimit = defaultAlbumLimit }: IAlbums) {
+export function Albums({ albumLimit = defaultAlbumLimit, withSeeAllFlag = true }: IAlbums) {
   const { id }: { id: string } = useParams();
   const { data, status } = useQuery(
     "artistAlbums",
@@ -33,7 +34,7 @@ export function Albums({ albumLimit = defaultAlbumLimit }: IAlbums) {
       ) : data.items?.length > 0 ? (
         <CardContainer
           path={`/artists/discography/${id}`}
-          withSeeAllFlag
+          withSeeAllFlag={withSeeAllFlag}
           title="Discography"
         >
           {data &&

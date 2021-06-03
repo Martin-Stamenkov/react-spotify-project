@@ -4,7 +4,8 @@ import {
   artistDiscography,
   relatedArtist,
   artistsTopTracks,
-  follow
+  follow,
+  unfollow
 } from "./endpoints";
 import { Storage } from "storage";
 import { requestHeader } from "utils";
@@ -73,7 +74,12 @@ export const followArtist = async (id: string) => {
 
   const response = await axios.put(follow(id), {}, { headers: requestHeader })
 
-  console.log(response)
+  return response.data
+}
+
+export const unfollowArtist = async (id: string) => {
+
+  const response = await axios.delete(unfollow(id), { headers: requestHeader })
 
   return response.data
 }

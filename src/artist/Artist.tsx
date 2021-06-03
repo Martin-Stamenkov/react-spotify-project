@@ -1,28 +1,58 @@
-import React, { useEffect } from "react";
-import { followArtist, getArtist } from "./api/requests";
+import React, { useEffect,  useState } from "react";
+import { followArtist, getArtist, unfollowArtist } from "./api/requests";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { About, Spacer, Spinner, Button } from "components-lib";
+import { About, Spacer, Spinner, Button, ErrorPrompt } from "components-lib";
 import { RelatedArtists, Albums } from "./components";
 import { TopTracks } from "./components/top-tracks/TopTracks";
 import { useProfile } from "user";
 import { useSnackbar } from "notistack";
-import  avatar from "assets/avatar.png" 
+import avatar from "assets/avatar.png"
+import { getUserFollowedArtists } from "user/api";
+import { checkIfUserFollowArtist } from "user/api/requests";
 
 export function Artist() {
   const { id }: { id: string } = useParams();
 
   const { data, status } = useQuery("artist", async () => await getArtist(id));
-  const { followedArtists } = useProfile();
+  const { setFollowed } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
-  const artistIsFollowed =
-    followedArtists && followedArtists.items.find((x: any) => x.id === id);
+  const [isFollowed, setIsFollowed] = useState(checkIfUserFollowArtist(id))
+
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
     });
   }, []);
+
+  useEffect(() => {
+    async function CheckIsFollowed() {
+      const response = await checkIfUserFollowArtist(id)
+      setIsFollowed(response)
+    }
+    CheckIsFollowed()
+  }, [id]);
+
+  const handleClick = async () => {
+    if (isFollowed) {
+      unfollowArtist(id)
+    } else {
+      followArtist(id);
+    }
+    const artists = await getUserFollowedArtists();
+    setFollowed(artists)
+    enqueueSnackbar(
+      !isFollowed
+        ? "Saved to your library"
+        : "Removed from your library",
+      { variant: "info" }
+    );
+  }
+
+  if (status === "error") {
+    return (<ErrorPrompt />)
+  }
 
   return (
     <>
@@ -33,7 +63,7 @@ export function Artist() {
           <About
             type={data.type}
             name={data.name}
-            avatar={data.images.length > 0 ?  data.images[0].url : avatar}
+            avatar={data.images.length > 0 ? data.images[0].url : avatar}
             description={`Genres: ${data.genres
               .map((x: string) => x)
               .join(", ")}`}
@@ -43,17 +73,9 @@ export function Artist() {
             <Button.Play width={60} height={60} position="inherit" />
             <Spacer width={20} />
             <Button.Primary
-              onClick={() => {
-                followArtist(id);
-                enqueueSnackbar(
-                  !artistIsFollowed
-                    ? "Saved to your library"
-                    : "Removed from your library",
-                  { variant: "info" }
-                );
-              }}
+              onClick={handleClick}
             >
-              {!artistIsFollowed ? "Follow" : "Unfollow"}
+              {!isFollowed ? "Follow" : "Unfollow"}
             </Button.Primary>
           </div>
           <Spacer height={60} />

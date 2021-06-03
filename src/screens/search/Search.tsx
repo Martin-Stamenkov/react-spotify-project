@@ -19,12 +19,6 @@ export function Search() {
   const classes = useStyles()
   const { result, query }: any = useSearch();
 
-  // useEffect(() => {
-  //   return () => {
-  //     setResult(null);
-  //   };
-  // }, [setResult]);
-
   if (
     result &&
     result.artists.items.length === 0 &&

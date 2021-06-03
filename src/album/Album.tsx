@@ -1,6 +1,7 @@
 import {
   About,
   Button,
+  ErrorPrompt,
   Spacer,
   Spinner,
   Table,
@@ -15,11 +16,10 @@ import { getAlbum } from "./api/requests";
 import { MoreAlbums } from "./more-albums/MoreAlbums";
 import { withRouter } from "react-router";
 import { format, parseISO } from "date-fns";
-
 interface ITrack {
   id: string;
   album: {
-    id:string,
+    id: string,
     name: string,
     images: { url: string }[];
   }
@@ -30,8 +30,14 @@ interface ITrack {
 
 export function Album() {
   const { id }: { id: string } = useParams();
-
   const { data, status } = useQuery("album", async () => await getAlbum(id));
+
+
+
+  if (status === "error") {
+    return (<ErrorPrompt />)
+  }
+
   return (
     <>
       {!data && status === "loading" ? (
@@ -45,11 +51,10 @@ export function Album() {
             additionalInfo={`${data.artists
               .map((x: { name: string }) => x.name)
               .join("\n\u2022\n")} \n\u2022\n ${format(
-              parseISO(data.release_date),
-              "yyyy"
-            )} \n\u2022\n ${data.total_tracks} ${
-              data.total_tracks > 1 ? "songs" : "song"
-            }`}
+                parseISO(data.release_date),
+                "yyyy"
+              )} \n\u2022\n ${data.total_tracks} ${data.total_tracks > 1 ? "songs" : "song"
+              }`}
           />
           <Table.Container withAlbum={false}>
             {data.tracks.items.map((track: ITrack, index: number) => (

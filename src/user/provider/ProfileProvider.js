@@ -29,6 +29,10 @@ export function ProfileProvider({ children }) {
     setUserPlaylists(playlists);
   }, []);
 
+  const setFollowed = useCallback((playlists) => {
+    setFollowedArtists(playlists);
+  }, []);
+
   useEffect(() => {
     async function UserData() {
       const user = await getUserAccount();
@@ -77,8 +81,9 @@ export function ProfileProvider({ children }) {
       userAlbums,
       userShows,
       setPlaylists,
+      setFollowed
     }),
-    [profile, followedArtists, userPlaylists, userAlbums, userShows, setPlaylists]
+    [profile, followedArtists, userPlaylists, userAlbums, userShows, setPlaylists, setFollowed]
   );
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

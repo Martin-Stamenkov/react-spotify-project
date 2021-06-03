@@ -5,6 +5,7 @@ import {
   userPlaylists,
   userAlbums,
   userPodcasts,
+  checkUserArtists
 } from "./endpoints";
 import { requestHeader } from "utils";
 
@@ -43,4 +44,12 @@ export const getCurrentUserSavedShows = async () => {
     headers: requestHeader,
   });
   return response.data;
+};
+
+export const checkIfUserFollowArtist = async (id) => {
+  const response = await axios.get(checkUserArtists(id), {
+    headers: requestHeader,
+  });
+
+  return response.data[0];
 };
