@@ -18,12 +18,14 @@ export const useStyles = makeStyles({
   button: {
     width: 100,
     height: 35,
-    color: Colors.WD1F0000,
-    borderRadius: 5,
+    color: Colors.Black,
+    borderRadius: 50,
     fontSize: 18,
     border: `1px solid ${Colors.Grey02}`,
+    backgroundColor: Colors.White,
+    mixBlendMode: "screen",
     "&:hover": {
-      borderColor: Colors.White,
+      transform: "scale(1.06)"
     },
   },
 });

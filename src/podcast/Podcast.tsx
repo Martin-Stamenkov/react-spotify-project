@@ -48,60 +48,63 @@ export function Podcast() {
               {data &&
                 data.episodes.items.map((episode: IEpisode) => (
                   <Table.Row key={episode.id} hover>
-                    <Table.Cell>
-                      <Grid style={{ display: "flex", alignItems: "center" }}>
-                        <img
-                          style={{
-                            marginRight: 10,
-                            marginLeft: 10,
-                            width: 150,
-                            borderRadius: 10,
-                          }}
-                          alt="avatar"
-                          src={episode.images[1].url}
-                        />
-                        <Grid
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <Typography customStyle={{ fontWeight: 900 }}>
-                            {episode.name}
-                          </Typography>
-                          <Spacer height={20} />
-                          <Typography
-                            customStyle={{ fontSize: 14, color: Colors.Grey02 }}
-                          >
-                            {truncate(episode.description, {
-                              length: 175,
-                              separator: " ",
-                            })}
-                          </Typography>
-                          <Grid
+                    <Button.Link to={`/episode/${episode.id}`}>
+
+                      <Table.Cell>
+                        <Grid style={{ display: "flex", alignItems: "center" }}>
+                          <img
                             style={{
-                              margin: 5,
-                              display: "flex",
-                              alignItems: "center",
+                              marginRight: 10,
+                              marginLeft: 10,
+                              width: 150,
+                              borderRadius: 10,
                             }}
+                            alt="avatar"
+                            src={episode.images[1].url}
+                          />
+                          <Grid
+                            style={{ display: "flex", flexDirection: "column" }}
                           >
-                            <Button.Play
-                              buttonColor={Colors.Black01}
-                              buttonBackgroundColor={Colors.White}
-                              position="inherit"
-                            />
+                            <Typography customStyle={{ fontWeight: 900 }}>
+                              {episode.name}
+                            </Typography>
+                            <Spacer height={20} />
                             <Typography
-                              customStyle={{
-                                fontSize: 14,
-                                color: Colors.Grey02,
-                                marginLeft: 10,
+                              customStyle={{ fontSize: 14, color: Colors.Grey02 }}
+                            >
+                              {truncate(episode.description, {
+                                length: 175,
+                                separator: " ",
+                              })}
+                            </Typography>
+                            <Grid
+                              style={{
+                                margin: 5,
+                                display: "flex",
+                                alignItems: "center",
                               }}
                             >
-                              {format(parseISO(episode.release_date), "LLL dd")}
-                              {"\n\u2022"} {"\n"}
-                              {`${Math.round(episode.duration_ms / 60000)} min`}
-                            </Typography>
+                              <Button.Play
+                                buttonColor={Colors.Black01}
+                                buttonBackgroundColor={Colors.White}
+                                position="inherit"
+                              />
+                              <Typography
+                                customStyle={{
+                                  fontSize: 14,
+                                  color: Colors.Grey02,
+                                  marginLeft: 10,
+                                }}
+                              >
+                                {format(parseISO(episode.release_date), "LLL dd")}
+                                {"\n\u2022"} {"\n"}
+                                {`${Math.round(episode.duration_ms / 60000)} min`}
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Table.Cell>
+                      </Table.Cell>
+                    </Button.Link>
                   </Table.Row>
                 ))}
             </Grid>

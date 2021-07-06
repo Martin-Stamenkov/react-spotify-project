@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     cover: {
-        width: 60,
+        width: 80,
         boxShadow: "3px 0px 18px #080707",
         cursor: "pointer",
         "&:hover": {

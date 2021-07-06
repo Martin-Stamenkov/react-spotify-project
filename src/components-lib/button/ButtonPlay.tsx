@@ -33,6 +33,9 @@ export const useStyles = makeStyles({
     backgroundColor: Colors.MainGreen,
     borderRadius: 50,
     color: Colors.White,
+    "&:hover": {
+      transform: "scale(1.1)"
+    },
   },
 });
 

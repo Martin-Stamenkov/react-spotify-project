@@ -11,9 +11,11 @@ const scopes = [
   "playlist-read-private",
   "playlist-read-collaborative",
   "playlist-modify-public",
-  "playlist-modify-private"
+  "playlist-modify-private",
+  "user-library-modify"
 ];
 
 export const login = `${authEndpoint}?response_type=token&client_id=${clientId}&redirect_uri=${encodeURIComponent(
   redirectUri
 )}&scope=${scopes.join("%20")}&show_dialog=true`;
+

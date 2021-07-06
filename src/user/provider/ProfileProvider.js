@@ -7,13 +7,13 @@ import React, {
   useCallback,
 } from "react";
 import {
-  getCurrentUserSavedAlbums,
-  getCurrentUserSavedShows,
-} from "user/api/requests";
-import {
   getUserAccount,
   getUserFollowedArtists,
   getListOfCurrentUserPlaylists,
+  getCurrentUserSavedAlbums,
+  getCurrentUserSavedShows,
+  getTheUserCurrentlyPlayingTrack,
+  getUserEpisodes
 } from "../api";
 
 const ProfileContext = createContext(undefined);
@@ -24,9 +24,16 @@ export function ProfileProvider({ children }) {
   const [userPlaylists, setUserPlaylists] = useState(null);
   const [userAlbums, setUserAlbums] = useState(null);
   const [userShows, setUserShows] = useState(null);
+  const [userEpisodes, setUserEpisodes] = useState(null);
+  const [userOwnPlaylist, setUserOwnPlaylist] = useState(null);
+  const [userCurrentTrack, setUserCurrentTrack] = useState(null);
 
   const setPlaylists = useCallback((playlists) => {
     setUserPlaylists(playlists);
+  }, []);
+
+  const setOwnPlaylist = useCallback((playlist) => {
+    setUserOwnPlaylist(playlist);
   }, []);
 
   const setFollowed = useCallback((playlists) => {
@@ -73,6 +80,23 @@ export function ProfileProvider({ children }) {
     UserShows();
   }, []);
 
+  useEffect(() => {
+    async function UserEpisodes() {
+      const episodes = await getUserEpisodes();
+      console.log(episodes)
+      setUserEpisodes(episodes);
+    }
+    UserEpisodes();
+  }, []);
+
+  useEffect(() => {
+    async function GetUserCurrentTrack() {
+      const response = await getTheUserCurrentlyPlayingTrack();
+      setUserCurrentTrack(response);
+    }
+    GetUserCurrentTrack();
+  }, []);
+
   const value = useMemo(
     () => ({
       followedArtists,
@@ -81,9 +105,25 @@ export function ProfileProvider({ children }) {
       userAlbums,
       userShows,
       setPlaylists,
-      setFollowed
+      setFollowed,
+      setOwnPlaylist,
+      userOwnPlaylist,
+      userCurrentTrack,
+      userEpisodes
     }),
-    [profile, followedArtists, userPlaylists, userAlbums, userShows, setPlaylists, setFollowed]
+    [
+      profile,
+      followedArtists,
+      userPlaylists,
+      userAlbums,
+      userShows,
+      setPlaylists,
+      setFollowed,
+      setOwnPlaylist,
+      userOwnPlaylist,
+      userCurrentTrack,
+      userEpisodes
+    ]
   );
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

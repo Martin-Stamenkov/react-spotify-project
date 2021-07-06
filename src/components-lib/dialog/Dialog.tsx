@@ -30,9 +30,7 @@ export const useStyles = makeStyles({
     borderRadius: 5,
     fontSize: 18,
     "&:hover": {
-      // height:  40,
-      width: 110,
-
+      transform: "scale(1.06)"
     },
   },
   forwardButton: {
@@ -42,11 +40,8 @@ export const useStyles = makeStyles({
     backgroundColor: Colors.MainGreen,
     borderRadius: 50,
     fontSize: 18,
-    // border: `1px solid ${Colors.Grey02}`,
     "&:hover": {
-      // height:  40,
-      width: 110,
-
+      transform: "scale(1.06)"
     },
   }
 

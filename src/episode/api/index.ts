@@ -1,0 +1,1 @@
+export { getEpisodeDetails } from "./requests"

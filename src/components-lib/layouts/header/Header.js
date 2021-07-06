@@ -100,12 +100,13 @@ const Header = (props) => {
               />
             ) : null}
             {props.location.pathname.includes("/collection") &&
+            !props.location.pathname.includes("/episodes") &&
             !props.location.pathname.includes("/tracks") ? (
               <Library />
             ) : null}
           </div>
-          {!profile ? (
-            <Button.Primary href={login}>Log In</Button.Primary>
+          {!profile && !Storage.getItem("accessToken") ? (
+            <Button.Primary href={login}>LOG IN</Button.Primary>
           ) : (
             profile && (
               <MButton className={classes.chip} onClick={handleClick}>

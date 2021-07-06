@@ -11,6 +11,7 @@ import { useStyles } from "./drawer-menu.styles";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
+import HearingIcon from '@material-ui/icons/Hearing';
 import AddIcon from "@material-ui/icons/Add";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
@@ -23,9 +24,8 @@ import { useSnackbar } from "notistack";
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { userPlaylists, profile, setPlaylists } = useProfile();
+  const { userPlaylists, profile, setPlaylists, userEpisodes } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
-  
 
   const onNavigateAfterCreate = async () => {
     const response = await CreatePlaylist(profile.id);
@@ -33,7 +33,9 @@ export const DrawerMenu = () => {
     setPlaylists(updatedPlaylists);
 
     history.push(`/playlist/${response.id}`);
-    enqueueSnackbar(`Added playlist ${response.name} to your library!`, { variant: "info" });
+    enqueueSnackbar(`Added playlist ${response.name} to your library!`, {
+      variant: "info",
+    });
   };
 
   return (
@@ -61,18 +63,26 @@ export const DrawerMenu = () => {
           <LibraryMusicIcon />
           <ListItemText className={classes.items} primary="Your Library" />
         </ListItem>
-        <ListItem button>
-          <AddIcon />
-          <ListItemText
-            onClick={onNavigateAfterCreate}
-            className={classes.items}
-            primary="Create Playlist"
-          />
-        </ListItem>
+        {profile ? (
+          <ListItem button>
+            <AddIcon />
+            <ListItemText
+              onClick={onNavigateAfterCreate}
+              className={classes.items}
+              primary="Create Playlist"
+            />
+          </ListItem>
+        ) : null}
         <ListItem onClick={() => history.push("/collection/tracks")} button>
           <FavoriteBorderIcon />
           <ListItemText className={classes.items} primary="Liked songs" />
         </ListItem>
+        {userEpisodes && userEpisodes.items.length > 0 ? (
+          <ListItem onClick={() => history.push("/collection/episodes")} button>
+            <HearingIcon />
+            <ListItemText className={classes.items} primary="Your Episodes" />
+          </ListItem>
+        ) : null}
       </List>
       <Divider />
       <div className={classes.playLists}>

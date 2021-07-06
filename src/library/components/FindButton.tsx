@@ -17,8 +17,7 @@ const useStyles = makeStyles(() => ({
     fontSize: 18,
     border: `1px solid ${Colors.Grey02}`,
     "&:hover": {
-      height: 50,
-      width: '21%',
+      transform: "scale(1.06)"
     },
   },
 }));
@@ -28,10 +27,10 @@ export const FindButton: React.FC<IFindButton> = ({ children, onClick }) => {
   const classes = useStyles();
 
   return (
-     <>
-     <ButtonBase onClick={onClick} className={classes.button}>
-       {children}
-     </ButtonBase>
-   </>
+    <>
+      <ButtonBase onClick={onClick} className={classes.button}>
+        {children}
+      </ButtonBase>
+    </>
   );
 }

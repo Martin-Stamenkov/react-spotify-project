@@ -46,7 +46,7 @@ export function MorePlaylists() {
               {playlist.map((playlist: any, index: number) => (
                 <Grid key={index} item>
                   <CardMedia
-                    path={`../playlist/${playlist.id}`}
+                    path={`../../playlist/${playlist.id}`}
                     image={playlist.images[0].url}
                     name={playlist.name}
                     description={playlist.description}

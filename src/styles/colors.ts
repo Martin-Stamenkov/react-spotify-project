@@ -11,6 +11,7 @@ export const colors = {
   Black01: "#1b1717",
 
   MainGreen: "#52d869",
+  SecondaryGreen: "#02634f",
 
   Purple: "#5032b0"
 };

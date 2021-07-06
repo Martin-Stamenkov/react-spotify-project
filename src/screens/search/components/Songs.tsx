@@ -4,18 +4,18 @@ import { useInfiniteScroll } from "hooks";
 import React, { useEffect, useState } from "react";
 import { millisecondsConverter } from "utils";
 import { useSearch } from "../provider";
-import {Storage} from 'storage'
+import { Storage } from 'storage'
 
 interface ITrack {
+  id: string;
+  album: {
     id: string;
-    album: {
-      id: string;
-      name: string;
-      images: { url: string }[];
-    };
     name: string;
-    duration_ms: string;
-  }
+    images: { url: string }[];
+  };
+  name: string;
+  duration_ms: string;
+}
 
 export function Songs() {
   const { result, query }: any = useSearch();
@@ -25,7 +25,7 @@ export function Songs() {
   const [isFetching, setIsFetching] = useInfiniteScroll(moreData);
 
   async function moreData() {
-    if (songs.length < total) {  
+    if (songs.length < total) {
       const response = await getResultFromSearch(Storage.getItem("query"), 10, offset);
       setSongs([...songs, ...response.tracks.items]);
       setOffset(offset + 10);
@@ -37,18 +37,18 @@ export function Songs() {
   }
 
   useEffect(() => {
-      async function persistData() {
+    async function persistData() {
       if (!result) {
-      const query = Storage.getItem("query")
-      setOffset(offset + 10);
-      const response = await getResultFromSearch(query, 10, offset)
-      setTotal(response.tracks.total)
-      setSongs(response.tracks.items)
+        const query = Storage.getItem("query")
+        setOffset(offset + 10);
+        const response = await getResultFromSearch(query, 10, offset)
+        setTotal(response.tracks.total)
+        setSongs(response.tracks.items)
+      }
     }
-  }
-  persistData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+    persistData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function Songs() {
 
   useEffect(() => {
     return () => {
-      Storage.removeItem("query")
+      Storage.removeItem("query");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -72,10 +72,10 @@ export function Songs() {
     if (result && songs.length === 0) {
       return result && songs
     }
-    return  songs
+    return songs
   }
 
-     return (
+  return (
     <>
       <CardContainer title={`All songs for “${Storage.getItem("query")}”`}>
         <Table.Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   CardContainer,
@@ -30,7 +30,15 @@ interface ITrack {
 }
 
 export function ItemsResult() {
-  const { result, query }: any = useSearch();
+  const { result, setResult, query }: any = useSearch();
+
+  useEffect(() => {
+    return () => {
+      setResult(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <>

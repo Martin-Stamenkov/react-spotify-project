@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box } from "@material-ui/core";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
-import { useStyles } from "./play-list-navigation.styles";
+import { useStyles } from "./footer.styles";
 import { ProgressiveLine } from "./progressive-line/ProgressiveLine";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
@@ -10,21 +10,42 @@ import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { VolumeSlider } from "./volume-slider/VolumeSlider";
 import { PlayListContent } from "./current-play-song/CurrentPlaySong";
 import { Button } from "components-lib";
+import { getTheUserCurrentlyPlayingTrack, useProfile } from "user";
+import { useInterval } from "hooks";
 
-export const PlayListNavigation = () => {
+export const Footer = () => {
   const classes = useStyles();
   const [progress, setProgress] = useState(10);
+  const [response, setResponse] = useState();
+  const { userCurrentTrack } = useProfile();
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 10 : prevProgress + 10
-      );
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  // React.useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setProgress((prevProgress) =>
+  //       prevProgress >= 100 ? 10 : prevProgress + 10
+  //     );
+  //   }, 800);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   async function GetProgress() {
+  //     const response = await getTheUserCurrentlyPlayingTrack()
+  //   }
+  //   GetProgress()
+  // }, []);
+  // console.log(userCurrentTrack && userCurrentTrack.progress_ms)
+  // useInterval(async () => {
+  //   const response = await getTheUserCurrentlyPlayingTrack()
+  //   setProgress(response.progress_ms)
+  //   console.log(response)
+  //   if (!response.is_playing) {
+  //     return
+  //   }
+  // }, 1000)
+
   return (
     <Grid container className={classes.playlistNavigation}>
       <Grid>

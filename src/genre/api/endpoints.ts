@@ -1,1 +1,1 @@
-export const genre = (genreId: string) => `https://api.spotify.com/v1/browse/categories/${genreId}?country=SE&locale=sv_SE"`
+export const genre = (genreId: string) => `${process.env.REACT_APP_BASE_URL}/browse/categories/${genreId}?country=SE&locale=sv_SE`

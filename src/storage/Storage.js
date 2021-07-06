@@ -4,6 +4,7 @@ class Storage {
   }
   setItem(key, value) {
     localStorage.setItem(key, value);
+    setTimeout(() => localStorage.clear(), 3600000)
   }
 
   removeItem(key) {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPlaylist, editPlaylist, playlistInfo, removePlaylist, followPlaylist, checkPlaylist } from "./endpoints";
+import { addPlaylist, editPlaylist, playlistInfo, removePlaylist, followPlaylist, checkPlaylist, addTrack } from "./endpoints";
 import { requestHeader } from "utils";
 
 export const getPlaylist = async (id) => {
@@ -64,6 +64,18 @@ export const EditPlaylistDetails = async (id, name, description) => {
       description: description,
       public: false,
     },
+    {
+      headers: requestHeader,
+    }
+  );
+
+  return response.data;
+};
+
+export const AddTrackToPlaylist = async (id, uri) => {
+  const response = await axios.post(
+    addTrack(id, uri),
+    {},
     {
       headers: requestHeader,
     }

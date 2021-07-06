@@ -27,7 +27,7 @@ import { Box } from "@material-ui/core";
 import { useSearch } from "screens";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "styles";
-import { Table as MUTable } from "@material-ui/core";
+import { SearchedTracksTable } from "./components";
 
 const searchLimit = 10;
 const initialOffset = 5;
@@ -53,7 +53,13 @@ export function Playlist() {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [playlist, setPlaylist] = useState();
   const history = useHistory();
-  const { userPlaylists, setPlaylists, profile } = useProfile();
+  const {
+    userPlaylists,
+    setPlaylists,
+    profile,
+    setOwnPlaylist,
+    userOwnPlaylist,
+  } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
   const [inputs, setInputs] = useState({
     name: "",
@@ -89,8 +95,14 @@ export function Playlist() {
   }, [playlist]);
 
   useEffect(() => {
-    setPlaylist(data);
-  }, [data]);
+    if (isOwner) {
+      setOwnPlaylist(data);
+      setPlaylist(userOwnPlaylist);
+    } else {
+      setPlaylist(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, isOwner]);
 
   const handleDeleteClick = () => {
     setOpenDeleteDialog(true);
@@ -153,6 +165,13 @@ export function Playlist() {
     );
   };
 
+  useEffect(() => {
+    return () => {
+      setResult(null);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (status === "error") {
     return <ErrorPrompt />;
   }
@@ -193,168 +212,133 @@ export function Playlist() {
                 ) : null}
               </Box>
               <Spacer height={20} />
-              {isOwner ||
-              userPlaylists.items.some((p) => p.id === playlist.id) ? (
-                <>
-                  {isOwner ? (
-                    <>
-                      <Button.Primary onClick={() => setOpenEditDialog(true)}>
-                        Edit
-                      </Button.Primary>
-                      <Dialog.Form
-                        title={`Edit Details`}
-                        buttonTitle="Save"
-                        src={avatar}
-                        open={openEditDialog}
-                        playlistTitle={playlist.name}
-                        playlistDescription={playlist.description}
-                        handleClose={() => setOpenEditDialog(false)}
-                        handleClickCancel={() => setOpenEditDialog(false)}
-                        handleClick={handleUpdatePlaylist}
-                        onChange={handleChange}
-                        titleName="name"
-                        descriptionName="description"
-                      />
-                      <Button.Primary
-                        onClick={handleDeleteClick}
-                        customStyle={{ marginLeft: 10 }}
-                      >
-                        Delete
-                      </Button.Primary>
-                      <Box>
-                        <Typography
-                          customStyle={{
-                            color: Colors.White,
-                            fontSize: 24,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Lets find something for your playlist
-                        </Typography>
-                        <Input
-                          onChange={handleChangeSearchItem}
-                          placeholder="Search for songs ..."
-                          className={classes.input}
-                        />
-                      </Box>
-                    </>
-                  ) : null}
-
-                  <Dialog.Base
-                    title={`Delete ${playlist.name}?`}
-                    description="This action cannot be undone."
-                    buttonTitle="Delete"
-                    open={openDeleteDialog}
-                    handleClose={() => setOpenDeleteDialog(false)}
-                    handleClickCancel={() => setOpenDeleteDialog(false)}
-                    handleClick={handleDeletePlaylist}
-                  />
-                </>
-              ) : null}
               <>
-                {!hasTracks ? (
-                  <MUTable>
-                    {result &&
-                      result.tracks.items.map((track) => (
-                        <Table.Row key={track.id} hover>
-                          <Table.Cell>
+                {isOwner ? (
+                  <>
+                    <Button.Primary onClick={() => setOpenEditDialog(true)}>
+                      Edit
+                    </Button.Primary>
+                    <Dialog.Form
+                      title={`Edit Details`}
+                      buttonTitle="Save"
+                      src={avatar}
+                      open={openEditDialog}
+                      playlistTitle={playlist.name}
+                      playlistDescription={playlist.description}
+                      handleClose={() => setOpenEditDialog(false)}
+                      handleClickCancel={() => setOpenEditDialog(false)}
+                      handleClick={handleUpdatePlaylist}
+                      onChange={handleChange}
+                      titleName="name"
+                      descriptionName="description"
+                    />
+                    <Button.Primary
+                      onClick={handleDeleteClick}
+                      customStyle={{ marginLeft: 10 }}
+                    >
+                      Delete
+                    </Button.Primary>
+                    <Spacer height={20} />
+                  </>
+                ) : null}
+                <Dialog.Base
+                  title={`Delete ${playlist.name}?`}
+                  description="This action cannot be undone."
+                  buttonTitle="Delete"
+                  open={openDeleteDialog}
+                  handleClose={() => setOpenDeleteDialog(false)}
+                  handleClickCancel={() => setOpenDeleteDialog(false)}
+                  handleClick={handleDeletePlaylist}
+                />
+              </>
+              {hasTracks ? (
+                <>
+                  <Table.Container withDateAdded withBottomHeight={false}>
+                    {playlist.tracks.items.map((item, index) => (
+                      <Table.Row key={index} hover>
+                        <Table.Cell>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {playlist.tracks.items.indexOf(item) + 1}
+                            <img
+                              style={{
+                                width: 40,
+                                marginRight: 10,
+                                marginLeft: 10,
+                              }}
+                              alt="avatar"
+                              src={item.track?.album.images[2].url}
+                            />
                             <div
                               style={{
                                 display: "flex",
-                                alignItems: "center",
+                                flexDirection: "column",
                               }}
                             >
-                              {result.tracks.items.indexOf(track) + 1}
-                              <img
-                                style={{
-                                  width: 40,
-                                  marginRight: 10,
-                                  marginLeft: 10,
-                                }}
-                                alt="avatar"
-                                src={track.album?.images[2].url}
-                              />
-                              {track.name}
-                            </div>
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            <Button.Link to={`/album/${track.album.id}`}>
-                              {track?.album.name}
-                            </Button.Link>
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            {millisecondsConverter(track.duration_ms)}
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            <Button.Primary
-                              onClick={handleDeleteClick}
-                              customStyle={{ borderRadius: 50 }}
-                            >
-                              Add
-                            </Button.Primary>
-                          </Table.Cell>
-                        </Table.Row>
-                      ))}
-                  </MUTable>
-                ) : (
-                  <>
-                    <Table.Container withDateAdded>
-                      {playlist.tracks.items.map((item, index) => (
-                        <Table.Row key={index} hover>
-                          <Table.Cell>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              {playlist.tracks.items.indexOf(item) + 1}
-                              <img
-                                style={{
-                                  width: 40,
-                                  marginRight: 10,
-                                  marginLeft: 10,
-                                }}
-                                alt="avatar"
-                                src={item.track?.album.images[2].url}
-                              />
-                              <div
+                              {item.track?.name}
+                              <Box
                                 style={{
                                   display: "flex",
-                                  flexDirection: "column",
+                                  flexDirection: "row",
                                 }}
                               >
-                                {item.track?.name}
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                  }}
-                                >
-                                  {item.track?.artists.map((x, index) => (
-                                    <div key={index}>
-                                      <Button.Link to={`/artists/${x.id}`}>
-                                        {`${"\n\u2022"} ${x.name}`}
-                                      </Button.Link>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
+                                {item.track?.artists.map((x, index) => (
+                                    <Button.Link key={index} to={`/artists/${x.id}`}>
+                                     {x.name}
+                                    </Button.Link>
+                                )).reduce((prev, curr) => [prev, ', ', curr])}
+                              </Box>
                             </div>
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            <Button.Link to={`/album/${item.track?.album.id}`}>
-                              {item.track?.album.name}
-                            </Button.Link>
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            {format(parseISO(item.added_at), "LLL dd, yyyy")}
-                          </Table.Cell>
-                          <Table.Cell align="right">
-                            {millisecondsConverter(item.track?.duration_ms)}
-                          </Table.Cell>
-                        </Table.Row>
-                      ))}
-                    </Table.Container>
+                          </div>
+                        </Table.Cell>
+                        <Table.Cell align="right">
+                          <Button.Link to={`/album/${item.track?.album.id}`}>
+                            {item.track?.album.name}
+                          </Button.Link>
+                        </Table.Cell>
+                        <Table.Cell align="right">
+                          {format(parseISO(item.added_at), "LLL dd, yyyy")}
+                        </Table.Cell>
+                        <Table.Cell align="right">
+                          {millisecondsConverter(item.track?.duration_ms)}
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Container>
+                  {!isOwner ? <Spacer height={100} /> : null}
+                </>
+              ) : null}
+              <>
+                {isOwner ? (
+                  <>
+                    <Box>
+                      <Spacer height={20} />
+                      <Typography
+                        customStyle={{
+                          color: Colors.White,
+                          fontSize: 24,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Lets find something for your playlist
+                      </Typography>
+                      <Input
+                        onChange={handleChangeSearchItem}
+                        placeholder="Search for songs ..."
+                        className={classes.input}
+                      />
+                    </Box>
+                    <SearchedTracksTable
+                      result={result}
+                      playlistId={playlist.id}
+                    />
+                    <Spacer height={20} />
                   </>
-                )}
+                ) : null}
               </>
             </>
           )}
