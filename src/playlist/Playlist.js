@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import {
   Table,
   About,
@@ -28,6 +28,8 @@ import { useSearch } from "screens";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "styles";
 import { SearchedTracksTable } from "./components";
+import { GetLikedSongs, SaveTracks, RemoveTracks } from "liked-songs";
+import { AddAndRemoveTracks } from "utils";
 
 const searchLimit = 10;
 const initialOffset = 5;
@@ -39,6 +41,16 @@ export const useStyles = makeStyles({
     width: "30%",
     "& .MuiOutlinedInput-root": {
       height: 40,
+    },
+  },
+  hover: {
+    "& .MuiButtonBase-root": {
+      display: "none",
+    },
+    "&:hover": {
+      "& .MuiButtonBase-root": {
+        display: "block",
+      },
     },
   },
 });
@@ -59,6 +71,8 @@ export function Playlist() {
     profile,
     setOwnPlaylist,
     userOwnPlaylist,
+    userSavedTracks,
+    setLikedSongs,
   } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
   const [inputs, setInputs] = useState({
@@ -77,6 +91,31 @@ export function Playlist() {
   const [isFollowed, setIsFollowed] = useState(memorizedIsFollowedValue);
   const classes = useStyles();
   const { searchForAnItem, setResult, result } = useSearch();
+
+  const isAddedToLibrary = useCallback(
+    (id) =>
+      userSavedTracks &&
+      userSavedTracks.items.some((item) => item.track.id === id),
+    [userSavedTracks]
+  );
+
+  const saveAndRemoveTrackFromLibrary = async (id) => {
+    if (!isAddedToLibrary(id)) {
+      await SaveTracks(id);
+    } else {
+      await RemoveTracks(id);
+    }
+    const response = await GetLikedSongs();
+    setLikedSongs(response);
+    enqueueSnackbar(
+      isAddedToLibrary(id)
+        ? "Removed from your Library"
+        : "Saved To Your Library",
+      {
+        variant: "info",
+      }
+    );
+  };
 
   useEffect(() => {
     window.scrollTo({
@@ -195,7 +234,9 @@ export function Playlist() {
                 name={playlist.name}
                 avatarBorderRadius={{ borderRadius: 5 }}
                 description={playlist.description}
-                additionalInfo={`${playlist.owner.display_name} \n\u2022 Followers ${playlist.followers.total} \n\u2022 ${playlist.tracks.items.length} songs`}
+                additionalInfo={`${playlist.owner.display_name} 
+                \n\u2022 Followers ${playlist.followers.total} 
+                \n\u2022 ${playlist.tracks.items.length} songs`}
               />
               <Box display="flex" alignItems="center">
                 {hasTracks ? (
@@ -257,12 +298,7 @@ export function Playlist() {
                     {playlist.tracks.items.map((item, index) => (
                       <Table.Row key={index} hover>
                         <Table.Cell>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
+                          <Box display="flex" alignItems="center">
                             {playlist.tracks.items.indexOf(item) + 1}
                             <img
                               style={{
@@ -273,29 +309,24 @@ export function Playlist() {
                               alt="avatar"
                               src={item.track?.album.images[2].url}
                             />
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
+                            <Box display="flex" flexDirection="column">
                               {item.track?.name}
-                              <Box
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                }}
-                              >
-                                {item.track?.artists.map((x, index) => (
-                                    <Button.Link key={index} to={`/artists/${x.id}`}>
-                                     {x.name}
+                              <Box display="flex" flexDirection="row">
+                                {item.track?.artists
+                                  .map((x, index) => (
+                                    <Button.Link
+                                      key={index}
+                                      to={`/artists/${x.id}`}
+                                    >
+                                      {x.name}
                                     </Button.Link>
-                                )).reduce((prev, curr) => [prev, ', ', curr])}
+                                  ))
+                                  .reduce((prev, curr) => [prev, ", ", curr])}
                               </Box>
-                            </div>
-                          </div>
+                            </Box>
+                          </Box>
                         </Table.Cell>
-                        <Table.Cell align="right">
+                        <Table.Cell align="center">
                           <Button.Link to={`/album/${item.track?.album.id}`}>
                             {item.track?.album.name}
                           </Button.Link>
@@ -304,7 +335,17 @@ export function Playlist() {
                           {format(parseISO(item.added_at), "LLL dd, yyyy")}
                         </Table.Cell>
                         <Table.Cell align="right">
-                          {millisecondsConverter(item.track?.duration_ms)}
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="flex-end"
+                          >
+                            <AddAndRemoveTracks
+                              id={item.track.id}
+                              isAdded={isAddedToLibrary(item.track.id)}
+                            />
+                            {millisecondsConverter(item.track?.duration_ms)}
+                          </Box>
                         </Table.Cell>
                       </Table.Row>
                     ))}

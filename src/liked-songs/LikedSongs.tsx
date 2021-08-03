@@ -1,23 +1,17 @@
 import { About, Button, Spacer, Spinner, Table } from "components-lib";
 import React from "react";
-import { useQuery } from "react-query";
-import { getLikedSongs } from "./api";
 import likedSongs from "assets/likedSongs.png";
 import { Colors } from "styles";
 import { useProfile } from "user";
 import { millisecondsConverter } from "utils";
 import { format, parseISO } from "date-fns";
+import { Box } from "@material-ui/core";
 
 export function LikedSongs() {
-  const { data, status } = useQuery(
-    "likedSongs",
-    async () => await getLikedSongs()
-  );
-  const { profile } = useProfile();
-
+  const { profile, userSavedTracks } = useProfile();
   return (
     <>
-      {status === "loading" ? (
+      {!userSavedTracks ? (
         <Spinner />
       ) : (
         <>
@@ -26,18 +20,17 @@ export function LikedSongs() {
             name="Liked Songs"
             type="playlist"
             avatar={likedSongs}
-            additionalInfo={`${profile.display_name} \n\u2022 ${data.total} ${
-              data.total > 1 ? "songs" : "song"
-            }`}
+            additionalInfo={`${profile.display_name} \n\u2022 ${userSavedTracks.total} ${userSavedTracks.total > 1 ? "songs" : "song"
+              }`}
             infoAvatar={profile.images[0].url}
-            avatarBorderRadius={{borderRadius: 5}}
+            avatarBorderRadius={{ borderRadius: 5 }}
           />
           <Table.Container withBottomHeight withDateAdded>
-            {data.items.map((song: any, index: number) => (
+            {userSavedTracks.items.map((song: any, index: number) => (
               <Table.Row hover key={index}>
                 <Table.Cell>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    {data.items.indexOf(song) + 1}
+                    {userSavedTracks.items.indexOf(song) + 1}
                     <img
                       style={{
                         width: 40,
@@ -47,28 +40,28 @@ export function LikedSongs() {
                       alt="avatar"
                       src={song.track.album.images[2].url}
                     />
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginTop: 10,
-                      }}
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      marginTop="10"
                     >
                       {song.track.name}
-                      {song.track.artists.map(
-                        (x: { id: string; name: string }, index: number) => (
-                          <div key={index}>
-                            <Button.Link to={`/artists/${x.id}`}>
-                              {`${"\n\u2022"} ${x.name}`}
-                            </Button.Link>
-                            <Spacer width={3} />
-                          </div>
-                        )
-                      )}
-                    </div>
+                      <Box display="flex">
+                        {song.track.artists.map(
+                          (x: { id: string; name: string }, index: number) => (
+                            <Box key={index} marginLeft={1}>
+                              <Button.Link to={`/artists/${x.id}`}>
+                                {`${"\n\u2022"} ${x.name}`}
+                              </Button.Link>
+                              <Spacer width={3} />
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                    </Box>
                   </div>
                 </Table.Cell>
-                <Table.Cell align="right">
+                <Table.Cell align="center">
                   <Button.Link to={`/album/${song.track.album.id}`}>
                     {song.track.album.name}
                   </Button.Link>
@@ -83,7 +76,8 @@ export function LikedSongs() {
             ))}
           </Table.Container>
         </>
-      )}
+      )
+      }
     </>
   );
 }

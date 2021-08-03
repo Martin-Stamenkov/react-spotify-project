@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Grid, makeStyles } from "@material-ui/core";
-import { Button, Typography } from "components-lib";
+import { Typography } from "components-lib";
 import { Colors } from "styles";
 
 export const useStyles = makeStyles({
@@ -30,7 +30,6 @@ export const GuestUserFooter = () => {
                 <Typography customStyle={{ color: Colors.White }}>Preview OF SPOTIFY</Typography>
                 <Typography customStyle={{ color: Colors.White }}>Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.</Typography>
             </Box>
-            <Button.Primary href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Fopen.spotify.com%2F">SIGN UP</Button.Primary>
         </Grid>
     );
 };

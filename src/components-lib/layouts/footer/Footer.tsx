@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid, Box } from "@material-ui/core";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import { useStyles } from "./footer.styles";
@@ -8,16 +8,13 @@ import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import LoopIcon from "@material-ui/icons/Loop";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { VolumeSlider } from "./volume-slider/VolumeSlider";
-import { PlayListContent } from "./current-play-song/CurrentPlaySong";
 import { Button } from "components-lib";
-import { getTheUserCurrentlyPlayingTrack, useProfile } from "user";
-import { useInterval } from "hooks";
+import { useProfile } from "user";
+import { CurrentPlay } from "./current-play/CurrentPlay";
 
 export const Footer = () => {
   const classes = useStyles();
-  const [progress, setProgress] = useState(10);
-  const [response, setResponse] = useState();
-  const { userCurrentTrack } = useProfile();
+  const [progress] = useState(10);
 
   // React.useEffect(() => {
   //   const timer = setInterval(() => {
@@ -49,7 +46,7 @@ export const Footer = () => {
   return (
     <Grid container className={classes.playlistNavigation}>
       <Grid>
-        <PlayListContent />
+        <CurrentPlay />
       </Grid>
       <div className={classes.playContainer}>
         <div className={classes.buttonsContainer}>

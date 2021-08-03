@@ -10,7 +10,7 @@ import {
 import { format, parseISO } from "date-fns";
 import React from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Colors } from "styles";
 import { truncate } from "utils";
 import { getShow } from "./api/requests";
@@ -27,7 +27,7 @@ interface IEpisode {
 
 export function Podcast() {
   const { id }: { id: string } = useParams();
-
+  const history = useHistory()
   const { data, status } = useQuery("show", async () => await getShow(id));
 
   return (
@@ -43,13 +43,10 @@ export function Podcast() {
             avatarBorderRadius={{ borderRadius: 10 }}
             avatar={data.images[0].url}
           />
-          <Grid style={{ display: "flex" }}>
-            <Grid>
+          <Table.Container withHeader={false}>
               {data &&
                 data.episodes.items.map((episode: IEpisode) => (
-                  <Table.Row key={episode.id} hover>
-                    <Button.Link to={`/episode/${episode.id}`}>
-
+                  <Table.Row onClick={() => history.push(`/episode/${episode.id}`)} key={episode.id} hover>
                       <Table.Cell>
                         <Grid style={{ display: "flex", alignItems: "center" }}>
                           <img
@@ -104,14 +101,12 @@ export function Podcast() {
                           </Grid>
                         </Grid>
                       </Table.Cell>
-                    </Button.Link>
                   </Table.Row>
                 ))}
-            </Grid>
             <Grid>
               <Description description={data.description}></Description>
             </Grid>
-          </Grid>
+          </Table.Container>
           <Spacer height={100} />
         </>
       )}

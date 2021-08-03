@@ -1,3 +1,3 @@
-import { Layouts } from "./layouts/Layouts";
+import { Layouts } from "./Layouts";
 
 export default { Layouts };

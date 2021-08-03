@@ -63,7 +63,7 @@ export function ItemsResult() {
                       {track.name}
                     </div>
                   </Table.Cell>
-                  <Table.Cell align="right">
+                  <Table.Cell align="center">
                     <Button.Link to={`/album/${track.album.id}`}>
                       {track?.album.name}
                     </Button.Link>

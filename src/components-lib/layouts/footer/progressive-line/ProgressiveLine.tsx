@@ -10,13 +10,13 @@ import { millisecondsConverter } from "utils";
 export const ProgressiveLine = (props: any) => {
   const [value, setValue] = useState(0);
   const classes = useStyles();
-  const { userCurrentTrack } = useProfile()
+  const {  userCurrentPlayback } = useProfile()
 
   // const handleSliderChange = (event, newValue) => {
   //   setValue(newValue);
   // };
   return (
-    userCurrentTrack && <Box display="flex" alignItems="center">
+    userCurrentPlayback && userCurrentPlayback.item && <Box display="flex" alignItems="center">
       <Typography customStyle={{ color: Colors.White }}>
         {millisecondsConverter(props.value)}
       </Typography>
@@ -29,7 +29,7 @@ export const ProgressiveLine = (props: any) => {
         />
       </Box>
       <Typography customStyle={{ color: Colors.White }}>
-        {millisecondsConverter(userCurrentTrack.item.duration_ms)}
+        {millisecondsConverter(userCurrentPlayback.item.duration_ms)}
       </Typography>
     </Box>
   );

@@ -16,7 +16,7 @@ import { Collapse, FormControlLabel } from "@material-ui/core";
 interface ITrack {
   id: string;
   album: {
-    id:string,
+    id: string,
     name: string,
     images: { url: string }[];
   }
@@ -55,7 +55,7 @@ export function TopTracks() {
             in={checked}
             collapsedHeight={hasMoreThanFivePopularSongs ? 430 : 0}
           >
-            <Table.Container>
+            <Table.Container withBottomHeight={false}>
               {data &&
                 data.tracks.map((track: ITrack) => (
                   <Table.Row key={track.id} hover>
@@ -74,7 +74,7 @@ export function TopTracks() {
                         {track.name}
                       </div>
                     </Table.Cell>
-                    <Table.Cell align="right">
+                    <Table.Cell align="center">
                       <Button.Link to={`/album/${track.album.id}`}>
                         {track?.album.name}
                       </Button.Link>

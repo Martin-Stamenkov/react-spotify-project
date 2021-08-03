@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { Button } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -22,17 +22,18 @@ interface IFavoriteButton {
     height?: number;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     isFavorite?: boolean;
+    className?: string;
 }
 
-export const ButtonFavorite = ({ width, height, onClick, isFavorite }: IFavoriteButton) => {
+export const ButtonFavorite = ({ width, height, onClick, isFavorite, className }: IFavoriteButton) => {
     const classes = useStyles()
 
     const iconStyle = { width: width, height: height }
 
     return (
 
-        < Button className={classes.root} onClick={onClick} >
-            {isFavorite ? <FavoriteIcon  style={iconStyle}  className={classes.favoriteIcon} />
+        <Button className={classes.root} onClick={onClick} >
+            {isFavorite ? <FavoriteIcon style={iconStyle} className={classes.favoriteIcon} />
                 : <FavoriteBorderIcon style={iconStyle} />
             }
         </ Button>

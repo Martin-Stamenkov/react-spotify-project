@@ -11,6 +11,7 @@ interface ITableContainer {
   withDateAdded?: boolean;
   withBottomHeight?: boolean;
   withAlbum?: boolean;
+  withHeader?: boolean
 }
 
 const useStyles = makeStyles({
@@ -25,15 +26,16 @@ export const TableContainer: React.FC<ITableContainer> = ({
   withDateAdded,
   withBottomHeight = true,
   withAlbum = true,
+  withHeader = true
 }) => {
   const classes = useStyles();
 
   return (
     <MUTable className={classes.table}>
-      <TableHead>
+      {withHeader ? <TableHead>
         <TableRow>
           <TableCell>Title</TableCell>
-          {withAlbum ? <TableCell align="right">Album</TableCell> : null}
+          {withAlbum ? <TableCell align="center">Album</TableCell> : null}
           {withDateAdded ? (
             <TableCell align="right">Date Added</TableCell>
           ) : null}
@@ -41,7 +43,7 @@ export const TableContainer: React.FC<ITableContainer> = ({
             <QueryBuilderIcon />
           </TableCell>
         </TableRow>
-      </TableHead>
+      </TableHead> : null}
       <TableBody>
         {children}
         <tr>

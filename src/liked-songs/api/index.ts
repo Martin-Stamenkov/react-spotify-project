@@ -1,2 +1,2 @@
-export {savedTracks} from './endpoints'
-export {getLikedSongs} from './requests'
+export { savedTracks } from './endpoints'
+export { GetLikedSongs } from './requests'

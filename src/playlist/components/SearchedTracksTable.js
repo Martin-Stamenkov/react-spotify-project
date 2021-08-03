@@ -45,7 +45,7 @@ export function SearchedTracksTable({ result, playlistId }) {
                   {track.name}
                 </div>
               </Table.Cell>
-              <Table.Cell align="right">
+              <Table.Cell align="center">
                 <Button.Link to={`/album/${track.album.id}`}>
                   {track?.album.name}
                 </Button.Link>

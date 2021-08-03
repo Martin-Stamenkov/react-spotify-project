@@ -5,7 +5,7 @@ export {
   checkIfUserFollowArtist,
   getCurrentUserSavedAlbums,
   getCurrentUserSavedShows,
-  getTheUserCurrentlyPlayingTrack,
+  getTheUserCurrentPlayback,
   getUserEpisodes,
   getListOfCurrentUserPlaylists,
 } from "./requests";

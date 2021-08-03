@@ -12,9 +12,10 @@ import {
   getListOfCurrentUserPlaylists,
   getCurrentUserSavedAlbums,
   getCurrentUserSavedShows,
-  getTheUserCurrentlyPlayingTrack,
-  getUserEpisodes
+  getTheUserCurrentPlayback,
+  getUserEpisodes,
 } from "../api";
+import { GetLikedSongs } from "liked-songs";
 
 const ProfileContext = createContext(undefined);
 
@@ -26,7 +27,8 @@ export function ProfileProvider({ children }) {
   const [userShows, setUserShows] = useState(null);
   const [userEpisodes, setUserEpisodes] = useState(null);
   const [userOwnPlaylist, setUserOwnPlaylist] = useState(null);
-  const [userCurrentTrack, setUserCurrentTrack] = useState(null);
+  const [userCurrentPlayback, setUserCurrentPlayback] = useState(null);
+  const [userSavedTracks, setUserSavedTracks] = useState(null);
 
   const setPlaylists = useCallback((playlists) => {
     setUserPlaylists(playlists);
@@ -36,8 +38,12 @@ export function ProfileProvider({ children }) {
     setUserOwnPlaylist(playlist);
   }, []);
 
-  const setFollowed = useCallback((playlists) => {
-    setFollowedArtists(playlists);
+  const setFollowed = useCallback((artists) => {
+    setFollowedArtists(artists);
+  }, []);
+
+  const setLikedSongs = useCallback((tracks) => {
+    setUserSavedTracks(tracks);
   }, []);
 
   useEffect(() => {
@@ -83,18 +89,25 @@ export function ProfileProvider({ children }) {
   useEffect(() => {
     async function UserEpisodes() {
       const episodes = await getUserEpisodes();
-      console.log(episodes)
       setUserEpisodes(episodes);
     }
     UserEpisodes();
   }, []);
 
   useEffect(() => {
-    async function GetUserCurrentTrack() {
-      const response = await getTheUserCurrentlyPlayingTrack();
-      setUserCurrentTrack(response);
+    async function GetUserCurrentPlayback() {
+      const response = await getTheUserCurrentPlayback();
+      setUserCurrentPlayback(response);
     }
-    GetUserCurrentTrack();
+    GetUserCurrentPlayback();
+  }, []);
+
+  useEffect(() => {
+    async function GetUserSavedTracks() {
+      const response = await GetLikedSongs();
+      setUserSavedTracks(response);
+    }
+    GetUserSavedTracks();
   }, []);
 
   const value = useMemo(
@@ -107,9 +120,11 @@ export function ProfileProvider({ children }) {
       setPlaylists,
       setFollowed,
       setOwnPlaylist,
+      setLikedSongs,
       userOwnPlaylist,
-      userCurrentTrack,
-      userEpisodes
+      userCurrentPlayback,
+      userEpisodes,
+      userSavedTracks,
     }),
     [
       profile,
@@ -120,9 +135,11 @@ export function ProfileProvider({ children }) {
       setPlaylists,
       setFollowed,
       setOwnPlaylist,
+      setLikedSongs,
       userOwnPlaylist,
-      userCurrentTrack,
-      userEpisodes
+      userCurrentPlayback,
+      userEpisodes,
+      userSavedTracks,
     ]
   );
   return (
