@@ -11,7 +11,7 @@ import { LikedSongs } from "liked-songs";
 import { uniqueId } from "utils";
 import { Podcast } from "podcast";
 import { Storage } from "storage";
-import { Episode } from "episode";
+import { EpisodeDetails } from "episode";
 import { LikedEpisodes } from "liked-episodes";
 
 export function Router() {
@@ -57,7 +57,8 @@ export function Router() {
           <Route path="/collection/albums" component={Albums} />
           <Route path="/collection/podcasts" component={Podcasts} />
           <Route path="/show/:id" component={Podcast} />
-          <Route path="/episode/:id" component={Episode} />
+          <Route path="/episode/:id" component={EpisodeDetails} />
+          <Route path="*" component={Login} />
         </Switch>
       )}
     </>

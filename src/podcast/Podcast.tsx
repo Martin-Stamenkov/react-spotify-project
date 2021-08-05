@@ -1,20 +1,16 @@
-import { Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import {
   About,
-  Button,
   Spacer,
   Spinner,
   Table,
-  Typography,
 } from "components-lib";
-import { format, parseISO } from "date-fns";
+import { Episode } from "episode";
 import React from "react";
 import { useQuery } from "react-query";
-import { useHistory, useParams } from "react-router-dom";
-import { Colors } from "styles";
-import { truncate } from "utils";
+import { useParams } from "react-router-dom";
 import { getShow } from "./api/requests";
-import { Description } from "./components/Description";
+import { Description } from "./components";
 
 interface IEpisode {
   id: string;
@@ -27,7 +23,6 @@ interface IEpisode {
 
 export function Podcast() {
   const { id }: { id: string } = useParams();
-  const history = useHistory()
   const { data, status } = useQuery("show", async () => await getShow(id));
 
   return (
@@ -43,71 +38,24 @@ export function Podcast() {
             avatarBorderRadius={{ borderRadius: 10 }}
             avatar={data.images[0].url}
           />
-          <Table.Container withHeader={false}>
+          <Box display="flex">
+            <Table.Container withHeader={false}>
               {data &&
-                data.episodes.items.map((episode: IEpisode) => (
-                  <Table.Row onClick={() => history.push(`/episode/${episode.id}`)} key={episode.id} hover>
-                      <Table.Cell>
-                        <Grid style={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            style={{
-                              marginRight: 10,
-                              marginLeft: 10,
-                              width: 150,
-                              borderRadius: 10,
-                            }}
-                            alt="avatar"
-                            src={episode.images[1].url}
-                          />
-                          <Grid
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <Typography customStyle={{ fontWeight: 900 }}>
-                              {episode.name}
-                            </Typography>
-                            <Spacer height={20} />
-                            <Typography
-                              customStyle={{ fontSize: 14, color: Colors.Grey02 }}
-                            >
-                              {truncate(episode.description, {
-                                length: 175,
-                                separator: " ",
-                              })}
-                            </Typography>
-                            <Grid
-                              style={{
-                                margin: 5,
-                                display: "flex",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Button.Play
-                                buttonColor={Colors.Black01}
-                                buttonBackgroundColor={Colors.White}
-                                position="inherit"
-                              />
-                              <Typography
-                                customStyle={{
-                                  fontSize: 14,
-                                  color: Colors.Grey02,
-                                  marginLeft: 10,
-                                }}
-                              >
-                                {format(parseISO(episode.release_date), "LLL dd")}
-                                {"\n\u2022"} {"\n"}
-                                {`${Math.round(episode.duration_ms / 60000)} min`}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Table.Cell>
-                  </Table.Row>
+                data.episodes.items.map((episode: IEpisode, index: number) => (
+                  <Episode id={episode.id.toString()}
+                    description={episode.description}
+                    duration_ms={episode.duration_ms}
+                    images={episode.images[1].url}
+                    name={episode.name}
+                    release_date={episode.release_date}
+                    key={index} />
                 ))}
+            </Table.Container>
             <Grid>
               <Description description={data.description}></Description>
             </Grid>
-          </Table.Container>
-          <Spacer height={100} />
+            <Spacer height={100} />
+          </Box>
         </>
       )}
     </>

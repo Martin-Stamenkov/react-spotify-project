@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Table,
   About,
@@ -28,7 +28,6 @@ import { useSearch } from "screens";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "styles";
 import { SearchedTracksTable } from "./components";
-import { GetLikedSongs, SaveTracks, RemoveTracks } from "liked-songs";
 import { AddAndRemoveTracks } from "utils";
 
 const searchLimit = 10;
@@ -71,8 +70,6 @@ export function Playlist() {
     profile,
     setOwnPlaylist,
     userOwnPlaylist,
-    userSavedTracks,
-    setLikedSongs,
   } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
   const [inputs, setInputs] = useState({
@@ -92,34 +89,9 @@ export function Playlist() {
   const classes = useStyles();
   const { searchForAnItem, setResult, result } = useSearch();
 
-  const isAddedToLibrary = useCallback(
-    (id) =>
-      userSavedTracks &&
-      userSavedTracks.items.some((item) => item.track.id === id),
-    [userSavedTracks]
-  );
-
-  const saveAndRemoveTrackFromLibrary = async (id) => {
-    if (!isAddedToLibrary(id)) {
-      await SaveTracks(id);
-    } else {
-      await RemoveTracks(id);
-    }
-    const response = await GetLikedSongs();
-    setLikedSongs(response);
-    enqueueSnackbar(
-      isAddedToLibrary(id)
-        ? "Removed from your Library"
-        : "Saved To Your Library",
-      {
-        variant: "info",
-      }
-    );
-  };
-
   useEffect(() => {
     window.scrollTo({
-      top: 0,
+      top: 0, behavior: 'smooth'
     });
   }, []);
 
@@ -181,15 +153,7 @@ export function Playlist() {
       setResult(null);
     }
   };
-
-  useEffect(() => {
-    async function CheckIsFollowed() {
-      const response = await getListOfCurrentUserPlaylists();
-      setIsFollowed(response.items.some((playlist) => playlist.id === id));
-    }
-    CheckIsFollowed();
-  }, [id]);
-
+  
   const handleFollowClick = async () => {
     if (!isFollowed) {
       await FollowPlaylist(id);
@@ -198,6 +162,7 @@ export function Playlist() {
     }
     const playlists = await getListOfCurrentUserPlaylists();
     setPlaylists(playlists);
+    setIsFollowed(playlists.items.some((playlist) => playlist.id === id));
     enqueueSnackbar(
       !isFollowed ? "Saved to your library" : "Removed from your library",
       { variant: "info" }
@@ -342,7 +307,6 @@ export function Playlist() {
                           >
                             <AddAndRemoveTracks
                               id={item.track.id}
-                              isAdded={isAddedToLibrary(item.track.id)}
                             />
                             {millisecondsConverter(item.track?.duration_ms)}
                           </Box>
@@ -350,6 +314,7 @@ export function Playlist() {
                       </Table.Row>
                     ))}
                   </Table.Container>
+                  <Spacer height={20}/>
                   {!isOwner ? <Spacer height={100} /> : null}
                 </>
               ) : null}

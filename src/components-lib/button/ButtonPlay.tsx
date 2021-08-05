@@ -61,7 +61,10 @@ export function ButtonPlay({
 
   return (
     <span
-      onClick={(e) => (e.stopPropagation(), setIsPlayed(isPlayed => !isPlayed))}
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsPlayed(isPlayed => !isPlayed)
+      }}
       className={className}
       style={style ? style : {
         bottom: 100,

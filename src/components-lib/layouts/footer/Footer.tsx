@@ -9,7 +9,6 @@ import LoopIcon from "@material-ui/icons/Loop";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { VolumeSlider } from "./volume-slider/VolumeSlider";
 import { Button } from "components-lib";
-import { useProfile } from "user";
 import { CurrentPlay } from "./current-play/CurrentPlay";
 
 export const Footer = () => {

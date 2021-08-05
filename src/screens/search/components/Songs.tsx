@@ -2,9 +2,10 @@ import { getResultFromSearch } from "api/requests";
 import { Button, CardContainer, Spacer, Spinner, Table } from "components-lib";
 import { useInfiniteScroll } from "hooks";
 import React, { useEffect, useState } from "react";
-import { millisecondsConverter } from "utils";
+import { AddAndRemoveTracks, millisecondsConverter } from "utils";
 import { useSearch } from "../provider";
 import { Storage } from 'storage'
+import { Box } from "@material-ui/core";
 
 interface ITrack {
   id: string;
@@ -102,7 +103,16 @@ export function Songs() {
                 </Button.Link>
               </Table.Cell>
               <Table.Cell align="right">
-                {millisecondsConverter(track.duration_ms)}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                >
+                  <AddAndRemoveTracks
+                    id={track.id}
+                  />
+                  {millisecondsConverter(track.duration_ms)}
+                </Box>
               </Table.Cell>
             </Table.Row>
           ))}

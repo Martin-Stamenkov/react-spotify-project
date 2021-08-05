@@ -1,26 +1,26 @@
 import React from "react"
-import { SaveTracks, RemoveTracks, GetLikedSongs } from "liked-songs"
 import { useSnackbar } from "notistack";
-import { useProfile } from "user";
+import { getUserEpisodes, useProfile } from "user";
 import { Button } from "components-lib";
 import { useLibraryFollowedStatus } from "hooks";
+import { followEpisode, unfollowEpisode } from "episode";
 
-interface IAddAndRemoveTracks {
+interface IAddAndRemoveEpisodes {
     id: string;
 }
 
-export function AddAndRemoveTracks({ id }: IAddAndRemoveTracks) {
-    const { setLikedSongs } = useProfile();
+export function AddAndRemoveEpisodes({ id }: IAddAndRemoveEpisodes) {
+    const { setLikedEpisodes } = useProfile();
     const { enqueueSnackbar } = useSnackbar();
     const isAddedToLibrary = useLibraryFollowedStatus(id)
-    const saveAndRemoveTrackFromLibrary = async () => {
+    const saveAndRemoveEpisodeFromLibrary = async () => {
         if (!isAddedToLibrary) {
-            await SaveTracks(id)
+            await followEpisode(id)
         } else {
-            await RemoveTracks(id)
+            await unfollowEpisode(id)
         }
-        const response = await GetLikedSongs()
-        setLikedSongs(response)
+        const response = await getUserEpisodes()
+        setLikedEpisodes(response)
         enqueueSnackbar(isAddedToLibrary ? "Removed from your Library" : "Saved To Your Library", {
             variant: "info",
         });
@@ -29,7 +29,7 @@ export function AddAndRemoveTracks({ id }: IAddAndRemoveTracks) {
     return (
         <Button.Favorite isFavorite={isAddedToLibrary} onClick={(e) => {
             e.stopPropagation();
-            saveAndRemoveTrackFromLibrary();
+            saveAndRemoveEpisodeFromLibrary();
         }} />
     )
 }

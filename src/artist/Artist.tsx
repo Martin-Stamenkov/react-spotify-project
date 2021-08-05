@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { followArtist, getArtist, unfollowArtist } from "./api/requests";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -35,7 +35,7 @@ export function Artist() {
   }, [id]);
 
   const handleClick = async () => {
-    if (isFollowed) {
+    if (await isFollowed) {
       unfollowArtist(id)
     } else {
       followArtist(id);

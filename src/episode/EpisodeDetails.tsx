@@ -1,29 +1,37 @@
-import React, { useMemo } from "react";
+import React, { useState } from "react";
 import { Box, Grid } from "@material-ui/core";
 import { About, Button, Spacer, Spinner, Typography } from "components-lib";
-import { useProfile } from "user";
 import { Colors } from "styles";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { format, parseISO } from "date-fns";
-import { getEpisodeDetails } from "./api";
-import { followEpisode } from "./api/requests";
+import { getEpisodeDetails, followEpisode, unfollowEpisode } from "./api";
+import { useSnackbar } from "notistack";
+import { getUserEpisodes, useProfile } from "user";
+import { useLibraryFollowedStatus } from "hooks";
 
-
-
-export const Episode = () => {
-    const { userEpisodes } = useProfile()
+export const EpisodeDetails = () => {
     const { id }: { id: string } = useParams();
-
     const { data, status } = useQuery("episode", async () => await getEpisodeDetails(id));
-    const isFollowed = useMemo(
-        () =>
-            userEpisodes &&
-            userEpisodes.items.some((item: any) => item.episode.id === id),
-        [userEpisodes, id]
+    const checkIfEpisodeIsFollowed = useLibraryFollowedStatus(id);
+    const { setLikedEpisodes } = useProfile()
+    const { enqueueSnackbar } = useSnackbar();
+    const [isFollowed, setIsFollowed] = useState(checkIfEpisodeIsFollowed);
 
-    ); const handleFollowEpisode = async () => {
-        await followEpisode(id)
+    const handleFollowEpisode = async () => {
+        if (!isFollowed) {
+            await followEpisode(id)
+        } else {
+            await unfollowEpisode(id)
+        }
+        const response = await getUserEpisodes();
+        setLikedEpisodes(response)
+        setIsFollowed(response.items.some((item: { episode: { id: string; }; }) => item.episode.id === id))
+
+        enqueueSnackbar(
+            !isFollowed ? "Saved to your library" : "Removed from your library",
+            { variant: "info" }
+        );
     }
 
     return (
@@ -45,7 +53,7 @@ export const Episode = () => {
                             <Button.Play position={"inherit"} width={60} height={60} />
                             <Spacer width={20} />
                             <Button.Favorite
-                                isFavorite={isFollowed}
+                                isFavorite={checkIfEpisodeIsFollowed}
                                 onClick={handleFollowEpisode}
                                 width={40}
                                 height={40}
@@ -58,7 +66,7 @@ export const Episode = () => {
                             gutterBottom
                         >
                             Episode Description
-                     </Typography>
+                        </Typography>
                         <Typography
                             customStyle={{ color: Colors.Grey02 }}
                         >

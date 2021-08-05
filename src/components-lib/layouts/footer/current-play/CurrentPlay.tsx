@@ -1,36 +1,16 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Box, Grid } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import { useStyles } from "./current-play.styles";
 import { Button } from "components-lib";
 import { useProfile } from "user";
 import { Colors } from "styles";
-import { GetLikedSongs, SaveTracks, RemoveTracks } from "liked-songs";
-import { useSnackbar } from "notistack";
 import { AddAndRemoveTracks } from "utils";
 
 
 export const CurrentPlay = () => {
   const classes = useStyles();
-  const { userCurrentPlayback, userSavedTracks, setLikedSongs } = useProfile();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const isAddedToLibrary = useMemo(() => userSavedTracks && userSavedTracks.items.some((item: { track: { id: string; }; }) => item.track.id === userCurrentPlayback.item.id),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [userSavedTracks])
-
-  const saveAndRemoveTrackFromLibrary = async () => {
-    if (!isAddedToLibrary) {
-      await SaveTracks(userCurrentPlayback.item.id)
-    } else {
-      await RemoveTracks(userCurrentPlayback.item.id)
-    }
-    const response = await GetLikedSongs()
-    setLikedSongs(response)
-    enqueueSnackbar(isAddedToLibrary ? "Removed from your Library" : "Saved To Your Library", {
-      variant: "info",
-    });
-  }
+  const { userCurrentPlayback } = useProfile();
 
   return (
     userCurrentPlayback && userCurrentPlayback.item &&
@@ -57,7 +37,7 @@ export const CurrentPlay = () => {
           </Box>
         </CardContent>
       </Box>
-      <AddAndRemoveTracks id={userCurrentPlayback.item.id} isAdded={isAddedToLibrary} />
+      <AddAndRemoveTracks id={userCurrentPlayback.item.id} />
     </Grid>
   );
 };

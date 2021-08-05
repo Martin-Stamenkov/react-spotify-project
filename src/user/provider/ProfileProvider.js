@@ -25,10 +25,10 @@ export function ProfileProvider({ children }) {
   const [userPlaylists, setUserPlaylists] = useState(null);
   const [userAlbums, setUserAlbums] = useState(null);
   const [userShows, setUserShows] = useState(null);
-  const [userEpisodes, setUserEpisodes] = useState(null);
   const [userOwnPlaylist, setUserOwnPlaylist] = useState(null);
   const [userCurrentPlayback, setUserCurrentPlayback] = useState(null);
   const [userSavedTracks, setUserSavedTracks] = useState(null);
+  const [userSavedEpisodes, setUserSavedEpisodes] = useState(null);
 
   const setPlaylists = useCallback((playlists) => {
     setUserPlaylists(playlists);
@@ -44,6 +44,10 @@ export function ProfileProvider({ children }) {
 
   const setLikedSongs = useCallback((tracks) => {
     setUserSavedTracks(tracks);
+  }, []);
+
+  const setLikedEpisodes = useCallback((episodes) => {
+    setUserSavedEpisodes(episodes);
   }, []);
 
   useEffect(() => {
@@ -89,7 +93,7 @@ export function ProfileProvider({ children }) {
   useEffect(() => {
     async function UserEpisodes() {
       const episodes = await getUserEpisodes();
-      setUserEpisodes(episodes);
+      setUserSavedEpisodes(episodes);
     }
     UserEpisodes();
   }, []);
@@ -121,10 +125,11 @@ export function ProfileProvider({ children }) {
       setFollowed,
       setOwnPlaylist,
       setLikedSongs,
+      setLikedEpisodes,
       userOwnPlaylist,
       userCurrentPlayback,
-      userEpisodes,
       userSavedTracks,
+      userSavedEpisodes, 
     }),
     [
       profile,
@@ -136,9 +141,10 @@ export function ProfileProvider({ children }) {
       setFollowed,
       setOwnPlaylist,
       setLikedSongs,
+      setLikedEpisodes,
+      userSavedEpisodes, 
       userOwnPlaylist,
       userCurrentPlayback,
-      userEpisodes,
       userSavedTracks,
     ]
   );

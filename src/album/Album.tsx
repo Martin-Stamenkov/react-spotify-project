@@ -7,15 +7,16 @@ import {
   Table,
   Typography,
 } from "components-lib";
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { Colors } from "styles";
-import { millisecondsConverter } from "utils";
+import { AddAndRemoveTracks, millisecondsConverter } from "utils";
 import { getAlbum } from "./api/requests";
 import { MoreAlbums } from "./more-albums/MoreAlbums";
 import { withRouter } from "react-router";
 import { format, parseISO } from "date-fns";
+import { Box } from "@material-ui/core";
 interface ITrack {
   id: string;
   album: {
@@ -32,6 +33,11 @@ export function Album() {
   const { id }: { id: string } = useParams();
   const { data, status } = useQuery("album", async () => await getAlbum(id));
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0, behavior: 'smooth'
+    });
+  }, []);
 
 
   if (status === "error") {
@@ -56,7 +62,7 @@ export function Album() {
               )} \n\u2022\n ${data.total_tracks} ${data.total_tracks > 1 ? "songs" : "song"
               }`}
           />
-          <Table.Container withAlbum={false}>
+          <Table.Container withBottomHeight={false} withAlbum={false}>
             {data.tracks.items.map((track: ITrack, index: number) => (
               <Table.Row key={index} hover>
                 <Table.Cell>
@@ -95,7 +101,16 @@ export function Album() {
                   </div>
                 </Table.Cell>
                 <Table.Cell align="right">
-                  {millisecondsConverter(track.duration_ms)}
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <AddAndRemoveTracks
+                      id={track.id}
+                    />
+                    {millisecondsConverter(track.duration_ms)}
+                  </Box>
                 </Table.Cell>
               </Table.Row>
             ))}

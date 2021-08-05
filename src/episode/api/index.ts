@@ -1,1 +1,1 @@
-export { getEpisodeDetails } from "./requests"
+export { getEpisodeDetails, followEpisode, unfollowEpisode } from "./requests"

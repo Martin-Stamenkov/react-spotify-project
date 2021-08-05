@@ -11,8 +11,8 @@ import {
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { Colors } from "styles";
-import { millisecondsConverter } from "utils";
-import { Collapse, FormControlLabel } from "@material-ui/core";
+import { AddAndRemoveTracks, millisecondsConverter } from "utils";
+import { Box, Collapse, FormControlLabel } from "@material-ui/core";
 interface ITrack {
   id: string;
   album: {
@@ -80,7 +80,16 @@ export function TopTracks() {
                       </Button.Link>
                     </Table.Cell>
                     <Table.Cell align="right">
-                      {millisecondsConverter(track.duration_ms)}
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                      >
+                        <AddAndRemoveTracks
+                          id={track.id}
+                        />
+                        {millisecondsConverter(track.duration_ms)}
+                      </Box>
                     </Table.Cell>
                   </Table.Row>
                 ))}

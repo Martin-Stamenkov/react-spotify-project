@@ -3,9 +3,24 @@ import React from "react";
 import likedSongs from "assets/likedSongs.png";
 import { Colors } from "styles";
 import { useProfile } from "user";
-import { millisecondsConverter } from "utils";
+import { AddAndRemoveTracks, millisecondsConverter } from "utils";
 import { format, parseISO } from "date-fns";
 import { Box } from "@material-ui/core";
+
+interface ISong {
+  added_at: string,
+  track: {
+    id: string,
+    name: string,
+    duration_ms: string,
+    album: {
+      id: string,
+      images: { url: string }[];
+      name: string,
+    }
+    artists: Array<{ id: string; name: string }>,
+  }
+}
 
 export function LikedSongs() {
   const { profile, userSavedTracks } = useProfile();
@@ -26,10 +41,10 @@ export function LikedSongs() {
             avatarBorderRadius={{ borderRadius: 5 }}
           />
           <Table.Container withBottomHeight withDateAdded>
-            {userSavedTracks.items.map((song: any, index: number) => (
+            {userSavedTracks.items.map((song: ISong, index: number) => (
               <Table.Row hover key={index}>
                 <Table.Cell>
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <Box display="flex" alignItems="center">
                     {userSavedTracks.items.indexOf(song) + 1}
                     <img
                       style={{
@@ -59,7 +74,7 @@ export function LikedSongs() {
                         )}
                       </Box>
                     </Box>
-                  </div>
+                  </Box>
                 </Table.Cell>
                 <Table.Cell align="center">
                   <Button.Link to={`/album/${song.track.album.id}`}>
@@ -70,7 +85,16 @@ export function LikedSongs() {
                   {format(parseISO(song.added_at), "LLL dd, yyyy")}
                 </Table.Cell>
                 <Table.Cell align="right">
-                  {millisecondsConverter(song.track.duration_ms)}
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <AddAndRemoveTracks
+                      id={song.track.id}
+                    />
+                    {millisecondsConverter(song.track.duration_ms)}
+                  </Box>
                 </Table.Cell>
               </Table.Row>
             ))}

@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Box
 } from "@material-ui/core";
 import spotify from "assets/spotify-transp-white-1.png";
 import { useStyles } from "./drawer-menu.styles";
@@ -24,7 +25,7 @@ import { useSnackbar } from "notistack";
 export const DrawerMenu = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { userPlaylists, profile, setPlaylists, userEpisodes } = useProfile();
+  const { userPlaylists, profile, setPlaylists, userSavedEpisodes } = useProfile();
   const { enqueueSnackbar } = useSnackbar();
 
   const onNavigateAfterCreate = async () => {
@@ -47,9 +48,9 @@ export const DrawerMenu = () => {
       }}
       anchor="left"
     >
-      <div className={classes.logoContainer}>
+      <Box className={classes.logoContainer}>
         <img className={classes.logo} src={spotify} alt="Spotify" />
-      </div>
+      </Box>
       <List>
         <ListItem onClick={() => history.push("/home")} button>
           <HomeIcon />
@@ -75,9 +76,9 @@ export const DrawerMenu = () => {
         ) : null}
         <ListItem onClick={() => history.push("/collection/tracks")} button>
           <FavoriteBorderIcon />
-          <ListItemText className={classes.items} primary="Liked songs" />
+          <ListItemText  className={classes.items} primary="Liked songs" />
         </ListItem>
-        {userEpisodes && userEpisodes.items.length > 0 ? (
+        {userSavedEpisodes && userSavedEpisodes.items.length > 0 ? (
           <ListItem onClick={() => history.push("/collection/episodes")} button>
             <HearingIcon />
             <ListItemText className={classes.items} primary="Your Episodes" />
@@ -85,7 +86,7 @@ export const DrawerMenu = () => {
         ) : null}
       </List>
       <Divider />
-      <div className={classes.playLists}>
+      <Box className={classes.playLists}>
         {userPlaylists &&
           userPlaylists.items.map((userPlaylist, index) => (
             <ListItem
@@ -99,7 +100,7 @@ export const DrawerMenu = () => {
               />
             </ListItem>
           ))}
-      </div>
+      </Box>
       <Spacer height={300} />
     </Drawer>
   );

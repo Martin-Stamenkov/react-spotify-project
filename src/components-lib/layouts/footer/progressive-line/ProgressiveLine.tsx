@@ -8,9 +8,9 @@ import { useProfile } from "user";
 import { millisecondsConverter } from "utils";
 
 export const ProgressiveLine = (props: any) => {
-  const [value, setValue] = useState(0);
+  const [value] = useState(0);
   const classes = useStyles();
-  const {  userCurrentPlayback } = useProfile()
+  const { userCurrentPlayback } = useProfile()
 
   // const handleSliderChange = (event, newValue) => {
   //   setValue(newValue);

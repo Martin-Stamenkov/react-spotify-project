@@ -26,18 +26,18 @@ interface ICardMedia {
   width?: number;
   imageMarginTop?: number;
   titlePosition?:
-    | "-moz-initial"
-    | "inherit"
-    | "initial"
-    | "revert"
-    | "unset"
-    | "fixed"
-    | "-webkit-sticky"
-    | "absolute"
-    | "relative"
-    | "static"
-    | "sticky"
-    | undefined;
+  | "-moz-initial"
+  | "inherit"
+  | "initial"
+  | "revert"
+  | "unset"
+  | "fixed"
+  | "-webkit-sticky"
+  | "absolute"
+  | "relative"
+  | "static"
+  | "sticky"
+  | undefined;
 }
 
 const useStyles = makeStyles({
@@ -85,53 +85,53 @@ export function CardMedia({
 
   return (
     <Card style={{ height: height, width: width }} className={classes.root}>
-        <CardActionArea
-          onClick={() => history.push(path)}
+      <CardActionArea
+        onClick={() => history.push(path)}
+        style={{
+          display: withFlex ? "flex" : "block",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <CardMediaMU
           style={{
-            display: withFlex ? "flex" : "block",
-            flexDirection: "column",
-            justifyContent: "space-between",
+            height: 175,
+            width: 170,
+            borderRadius: withCircleAvatar ? 100 : 2,
+            marginTop: imageMarginTop,
           }}
-        >
-          <CardMediaMU
-            style={{
-              height: 175,
-              width: 170,
-              borderRadius: withCircleAvatar ? 100 : 2,
-              marginTop: imageMarginTop,
+          component="img"
+          alt="Image"
+          image={image}
+          title="Image"
+        />
+        <CardContent>
+          <Typography
+            customStyle={{
+              color: Colors.White,
+              top: 5,
+              position: titlePosition,
             }}
-            component="img"
-            alt="Image"
-            image={image}
-            title="Image"
-          />
-          <CardContent>
-            <Typography
-              customStyle={{
-                color: Colors.White,
-                top: 5,
-                position: titlePosition,
-              }}
-              variant="h6"
-            >
-              {truncate(name, {
-                length: 15,
-                separator: " ",
-              })}
-            </Typography>
-            <Typography variant="body2" customStyle={{ color: Colors.Grey }}>
-              {truncate(description, {
-                length: 45,
-                separator: " ",
-              })}
-            </Typography>
-          </CardContent>
+            variant="h6"
+          >
+            {truncate(name, {
+              length: 15,
+              separator: " ",
+            })}
+          </Typography>
+          <Typography variant="body2" customStyle={{ color: Colors.Grey }}>
+            {truncate(description, {
+              length: 45,
+              separator: " ",
+            })}
+          </Typography>
+        </CardContent>
 
-          {withPlayButton ? (
-            <Button.Play className="hidden-button" withPadding />
-          ) : null}
-        </CardActionArea>
-        <Spacer height={150} />
+        {withPlayButton ? (
+          <Button.Play className="hidden-button" withPadding />
+        ) : null}
+      </CardActionArea>
+      <Spacer height={150} />
     </Card>
   );
 }

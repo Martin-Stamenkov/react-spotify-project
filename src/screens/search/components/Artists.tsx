@@ -73,7 +73,7 @@ export function Artists() {
 
     return (
         <>
-            <CardContainer title={`All artists for “${Storage.getItem("query")}”`}>
+            <CardContainer title={Storage.getItem("query") ? `All artists for “${Storage.getItem("query")}”` : ""}>
                 {checkForData().map((artist: IArtist) => (
                     <Grid key={artist.id} item>
                         <CardMedia

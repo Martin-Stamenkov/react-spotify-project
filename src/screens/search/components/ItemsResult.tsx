@@ -6,9 +6,9 @@ import {
   Spacer,
   Table,
 } from "components-lib";
-import { Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import avatar from "assets/avatar.png";
-import { millisecondsConverter } from "utils";
+import { AddAndRemoveTracks, millisecondsConverter } from "utils";
 import { useSearch } from "../provider";
 
 interface IArtist {
@@ -69,7 +69,16 @@ export function ItemsResult() {
                     </Button.Link>
                   </Table.Cell>
                   <Table.Cell align="right">
-                    {millisecondsConverter(track.duration_ms)}
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      <AddAndRemoveTracks
+                        id={track.id}
+                      />
+                      {millisecondsConverter(track.duration_ms)}
+                    </Box>
                   </Table.Cell>
                 </Table.Row>
               ))}
